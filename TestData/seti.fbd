@@ -1,0 +1,671 @@
+// Seti chain decoder, derived from seti.xml SETI_2G_H46 designstep 01 revision 1.13 date 2008-11-04
+// Chain dispatcher
+chaindispatch[command,data,mask] {
+   do {
+   startpos=match(1,command,0);
+   println "Match: " + startpos;
+   command[startpos+8] = ( 1: println "Write Seti chain"; | 0: println "Read Seti chain"; );
+   command[startpos+7..startpos+2] = (
+                 1: CHN001[data[startpos+10+23..startpos+10],mask[startpos+10+23..startpos+10]]; | //ACTM1
+                 2: CHN002[data[startpos+10+22..startpos+10],mask[startpos+10+22..startpos+10]]; | //ACTM2
+                 3: CHN003[data[startpos+10+18..startpos+10],mask[startpos+10+18..startpos+10]]; | //RP_CFG_FE
+                 4: CHN004[data[startpos+10+9..startpos+10],mask[startpos+10+9..startpos+10]]; | //RP_CFG_BI
+                 5: CHN005[data[startpos+10+28..startpos+10],mask[startpos+10+28..startpos+10]]; | //RP_ROW
+                 6: CHN006[data[startpos+10+20..startpos+10],mask[startpos+10+20..startpos+10]]; | //RP_COL
+                 7: CHN007[data[startpos+10+7..startpos+10],mask[startpos+10+7..startpos+10]]; | //QUAD_GC
+                 8: CHN008[data[startpos+10+17..startpos+10],mask[startpos+10+17..startpos+10]]; | //RIBCORNER_ROW
+                 9: CHN009[data[startpos+10+31..startpos+10],mask[startpos+10+31..startpos+10]]; | //RIBCORNER_COL
+                 10: CHN010[data[startpos+10+31..startpos+10],mask[startpos+10+31..startpos+10]]; | //VREF
+                 11: CHN011[data[startpos+10+5..startpos+10],mask[startpos+10+5..startpos+10]]; | //IREF
+                 12: CHN012[data[startpos+10+6..startpos+10],mask[startpos+10+6..startpos+10]]; | //VINTACT1
+                 13: CHN013[data[startpos+10+6..startpos+10],mask[startpos+10+6..startpos+10]]; | //VINTACT2
+                 14: CHN014[data[startpos+10+6..startpos+10],mask[startpos+10+6..startpos+10]]; | //VINTACT3
+                 15: CHN015[data[startpos+10+6..startpos+10],mask[startpos+10+6..startpos+10]]; | //VINTACT4
+                 16: CHN016[data[startpos+10+32..startpos+10],mask[startpos+10+32..startpos+10]]; | //VPPVNWLLVEQL
+                 17: CHN017[data[startpos+10+14..startpos+10],mask[startpos+10+14..startpos+10]]; | //VPWLL
+                 18: CHN018[data[startpos+10+34..startpos+10],mask[startpos+10+34..startpos+10]]; | //VINTVBLH
+                 19: CHN019[data[startpos+10+16..startpos+10],mask[startpos+10+16..startpos+10]]; | //VPLVBLEQ
+                 20: CHN020[data[startpos+10+15..startpos+10],mask[startpos+10+15..startpos+10]]; | //VBB
+                 21: CHN021[data[startpos+10+15..startpos+10],mask[startpos+10+15..startpos+10]]; | //OCD_CAL
+                 22: CHN022[data[startpos+10+13..startpos+10],mask[startpos+10+13..startpos+10]]; | //OCD_READONLY
+                 23: CHN023[data[startpos+10+12..startpos+10],mask[startpos+10+12..startpos+10]]; | //VMON
+                 24: CHN024[data[startpos+10+11..startpos+10],mask[startpos+10+11..startpos+10]]; | //SRF
+                 25: CHN025[data[startpos+10+20..startpos+10],mask[startpos+10+20..startpos+10]]; | //TEMP_SENSOR
+                 26: CHN026[data[startpos+10+2..startpos+10],mask[startpos+10+2..startpos+10]]; | //BURNIN
+                 27: CHN027[data[startpos+10+7..startpos+10],mask[startpos+10+7..startpos+10]]; | //CMDRCV
+                 28: CHN028[data[startpos+10+7..startpos+10],mask[startpos+10+7..startpos+10]]; | //ADDRCV
+                 29: CHN029[data[startpos+10+21..startpos+10],mask[startpos+10+21..startpos+10]]; | //CLKRCV
+                 30: CHN030[data[startpos+10+30..startpos+10],mask[startpos+10+30..startpos+10]]; | //BYTE_L_1
+                 31: CHN031[data[startpos+10+8..startpos+10],mask[startpos+10+8..startpos+10]]; | //BYTE_L_2
+                 32: CHN032[data[startpos+10+31..startpos+10],mask[startpos+10+31..startpos+10]]; | //BYTE_U
+                 36: CHN036[data[startpos+10+9..startpos+10],mask[startpos+10+9..startpos+10]]; | //EFBLK1_CTRL
+                 37: CHN037[data[startpos+10+35..startpos+10],mask[startpos+10+35..startpos+10]]; | //EFBLK1_DATA
+                 38: CHN038[data[startpos+10+9..startpos+10],mask[startpos+10+9..startpos+10]]; | //EFBLK2_CTRL
+                 39: CHN039[data[startpos+10+35..startpos+10],mask[startpos+10+35..startpos+10]]; | //EFBLK2_DATA
+                 48: CHN048[data[startpos+10+9..startpos+10],mask[startpos+10+9..startpos+10]]; | //EFBLKSBR_CTRL
+                 49: CHN049[data[startpos+10+57..startpos+10],mask[startpos+10+57..startpos+10]]; | //EFBLKSBR_DATA1
+                 50: CHN050[data[startpos+10+74..startpos+10],mask[startpos+10+74..startpos+10]]; | //EFBLKSBR_DATA2
+                 51: CHN051[data[startpos+10+13..startpos+10],mask[startpos+10+13..startpos+10]]; | //SBR_CONTROL
+                 52: CHN052[data[startpos+10+15..startpos+10],mask[startpos+10+15..startpos+10]]; | //DLL_CFG
+                 53: CHN053[data[startpos+10+9..startpos+10],mask[startpos+10+9..startpos+10]]; | //DLL_TM
+                 54: CHN054[data[startpos+10+49..startpos+10],mask[startpos+10+49..startpos+10]]; | //DLL_RW
+                 55: CHN055[data[startpos+10+21..startpos+10],mask[startpos+10+21..startpos+10]]; | //DLLDCC
+                 56: CHN056[data[startpos+10+15..startpos+10],mask[startpos+10+15..startpos+10]]; | //DCC_CFG
+                 57: CHN057[data[startpos+10+9..startpos+10],mask[startpos+10+9..startpos+10]]; | //DCC_TM
+                 58: CHN058[data[startpos+10+37..startpos+10],mask[startpos+10+37..startpos+10]]; | //DCC_RW
+                 59: CHN059[data[startpos+10+10..startpos+10],mask[startpos+10+10..startpos+10]]; | //DLLGOV
+                 60: CHN060[data[startpos+10+21..startpos+10],mask[startpos+10+21..startpos+10]]; | //GLOBAL_CONTROL
+                 61: CHN061[data[startpos+10+8..startpos+10],mask[startpos+10+8..startpos+10]]; | //TRAS_REFRESH
+                 63: CHN063[data[startpos+10+105..startpos+10],mask[startpos+10+105..startpos+10]]; //CHIPID
+);
+} while (startpos>0)
+}
+
+CHN001[data,mask] { //ACTM1
+   println "Chain: ACTM topo - YA, YB, XWR, XRD";
+   println "ya[7:0]: "+bin(data[16..23])+" mask "+bin(mask[16..23]);    // ya[7:0], ACTM YA register default value: %
+   println "yb[7:0]: "+bin(data[8..15])+" mask "+bin(mask[8..15]);    // yb[7:0], ACTM YB register default value: %
+   println "xwr[3:0]: "+bin(data[4..7])+" mask "+bin(mask[4..7]);    // xwr[3:0], ACTM XWR register default value: %
+   println "xrd[3:0]: "+bin(data[0..3])+" mask "+bin(mask[0..3]);    // xrd[3:0], ACTM XRD register default value: %
+}
+
+CHN002[data,mask] { //ACTM2
+   println "Chain: ACTM topo - YC, YD; ACTM control modes";
+   println "tm_actmhalf: "+bin(data[22])+" mask "+bin(mask[22]);    // tm_actmhalf,  default value: %
+   println "yc[7:0]: "+bin(data[14..21])+" mask "+bin(mask[14..21]);    // yc[7:0], ACTM YC register default value: %
+   println "yd[7:0]: "+bin(data[6..13])+" mask "+bin(mask[6..13]);    // yd[7:0], ACTM YD register default value: %
+   println "tm_actm: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_actm, Enable ACTM, dctl2=A12(ext). default value: %
+   println "tm_actm_scrambler: "+bin(data[4])+" mask "+bin(mask[4]);    // tm_actm_scrambler, Takes row address into account for bitline twist default value: %
+   println "tm_bleeder: "+bin(data[3])+" mask "+bin(mask[3]);    // tm_bleeder,  default value: %
+   println "tm_bc: "+bin(data[2])+" mask "+bin(mask[2]);    // tm_bc, Burst compression default value: %
+   println "tm_bcrdis: "+bin(data[1])+" mask "+bin(mask[1]);    // tm_bcrdis, Auto reset of pass/fail bit at burst end in burst compression mode. Restore pass/fail bit with dummy read after TMBCRDIS off. default value: %
+   println "tm_dctl1: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_dctl1, Switch CKE to DCTL functionality default value: %
+}
+
+CHN003[data,mask] { //RP_CFG_FE
+   println "Chain: REDPAD config FE";
+   println "tm_redpadc: "+bin(data[18])+" mask "+bin(mask[18]);    // tm_redpadc, Enable REDPAD interface on component level default value: %
+   println "bord_seg_mode: "+bin(data[17])+" mask "+bin(mask[17]);    // bord_seg_mode, Restrict to counting border segments only default value: %
+   println "n_nop_row[2:0]: "+bin(data[14..16])+" mask "+bin(mask[14..16]);    // n_nop_row[2:0], Number of nops between cmd's in a row sequence default value: %
+   println "n_nop_col[2:0]: "+bin(data[11..13])+" mask "+bin(mask[11..13]);    // n_nop_col[2:0], Number of nops between cmd's in a col sequence default value: %
+   println "seq_half_bank: "+bin(data[10])+" mask "+bin(mask[10]);    // seq_half_bank, Enable half bank sequence. =0: all sequences over all banks, bank addr from sequencer. =1: all sequences over half number of banks, bank addr 1:0 from sequencer default value: %
+   println "sba[2:0]: "+bin(data[7..9])+" mask "+bin(mask[7..9]);    // sba[2:0], Bank addr for single bank mode default value: %
+   println "seq_act: "+bin(data[6])+" mask "+bin(mask[6]);    // seq_act, Enable activate sequence default value: %
+   println "seq_pre: "+bin(data[5])+" mask "+bin(mask[5]);    // seq_pre, Enable precharge sequence default value: %
+   println "seq_rd: "+bin(data[4])+" mask "+bin(mask[4]);    // seq_rd, Enable read sequence default value: %
+   println "seq_wr: "+bin(data[3])+" mask "+bin(mask[3]);    // seq_wr, Enable write sequence default value: %
+   println "col_down: "+bin(data[2])+" mask "+bin(mask[2]);    // col_down, Col addr counter. 0= increment, step size 8 (burst length). 1= decrement, when red_incl=1 then countdown will start with redundant elements default value: %
+   println "row_down: "+bin(data[1])+" mask "+bin(mask[1]);    // row_down, Dto for row default value: %
+   println "red_incl: "+bin(data[0])+" mask "+bin(mask[0]);    // red_incl, Include redundancy counting default value: %
+}
+
+CHN004[data,mask] { //RP_CFG_BI
+   println "Chain: REDPAD config BI";
+   println "mod_col_sel: "+bin(data[9])+" mask "+bin(mask[9]);    // mod_col_sel, Column counter modulo select on/off. 1 = modulo 64 (8xBL8) default value: %
+   println "mod_row_sel[2:0]: "+bin(data[6..8])+" mask "+bin(mask[6..8]);    // mod_row_sel[2:0], Row counter modulo select: off, 8, 32, 64, 128 default value: %
+   println "scr_sel[2:0]: "+bin(data[3..5])+" mask "+bin(mask[3..5]);    // scr_sel[2:0], BI scrambler select: off, step 4 / 64 / 1024, rest reserved default value: %
+   println "col_ba_down: "+bin(data[2])+" mask "+bin(mask[2]);    // col_ba_down, Column bank address counter: 0=increment, 1=decrement, stepsize always 1. default value: %
+   println "row_ba_down: "+bin(data[1])+" mask "+bin(mask[1]);    // row_ba_down, Row bank address counter: 0=increment, 1=decrement, stepsize always 1. default value: %
+   println "burnin: "+bin(data[0])+" mask "+bin(mask[0]);    // burnin, Enable burnin functionality default value: %
+}
+
+CHN005[data,mask] { //RP_ROW
+   println "Chain: REDPAD scan row counter";
+   println "row_ba[2:0]: "+bin(data[26..28])+" mask "+bin(mask[26..28]);    // row_ba[2:0], RP Row Bank default value: %
+   println "row_state[2:0]: "+bin(data[23..25])+" mask "+bin(mask[23..25]);    // row_state[2:0], RP Row State default value: %
+   println "redundant_row_h[13:7]: "+bin(data[16..22])+" mask "+bin(mask[16..22]);    // redundant_row_h[13:7], RP Red.Row High Addr. default value: %
+   println "redundant_row_l[1:0]: "+bin(data[14..15])+" mask "+bin(mask[14..15]);    // redundant_row_l[1:0], RP Red.Row Low Addr. default value: %
+   println "main_row[13:0]: "+bin(data[0..13])+" mask "+bin(mask[0..13]);    // main_row[13:0], RP Main Row default value: %
+}
+
+CHN006[data,mask] { //RP_COL
+   println "Chain: REDPAD scan column counter";
+   println "col_ba[2:0]: "+bin(data[18..20])+" mask "+bin(mask[18..20]);    // col_ba[2:0], RP Col Bank default value: %
+   println "col_state[1:0]: "+bin(data[16..17])+" mask "+bin(mask[16..17]);    // col_state[1:0], RP Col State default value: %
+   println "redundant_col[5:0]: "+bin(data[10..15])+" mask "+bin(mask[10..15]);    // redundant_col[5:0], RP Red.Col. default value: %
+   println "main_col[9:0]: "+bin(data[0..9])+" mask "+bin(mask[0..9]);    // main_col[9:0], RP Main Col. default value: %
+}
+
+CHN007[data,mask] { //QUAD_GC
+   println "Chain: Contains TMs needed in global control as well as for the quads (e.g. WRBANKS, 2BANKPAR), should be preferably short to speed up testing";
+   println "tm_extadr: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_extadr, Activate extended address mode (redundancy addr.) (AX=1) / disable fused redundancy (AX=0), TM_EXTADREN  enable test mode  default value: %
+   println "tm_8bankstagg[1:0]: "+bin(data[5..6])+" mask "+bin(mask[5..6]);    // tm_8bankstagg[1:0], Staggered 8-bank commands (ACT/WR/PRE) default value: %
+   println "tm_actall[1:0]: "+bin(data[3..4])+" mask "+bin(mask[3..4]);    // tm_actall[1:0], Set all banks by ignoring the bank address (used in redpad) - or use CBRALLBANKS instead? default value: %
+   println "tm_wrbanks[1:0]: "+bin(data[1..2])+" mask "+bin(mask[1..2]);    // tm_wrbanks[1:0], Simultaneous 8-bank or 4-bank WR default value: %
+   println "tm_2bankpar: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_2bankpar, 2-bank commands (ACT/WR/RD/PRE) for ACTM256:1 default value: %
+}
+
+CHN008[data,mask] { //RIBCORNER_ROW
+   println "Chain: Rib test modes, partial good options";
+   println "tm_array_off: "+bin(data[17])+" mask "+bin(mask[17]);    // tm_array_off, Switch array off (Note: TM only valid for 2GH45, not effective on 2GH46) default value: %
+   println "tm_riblatch: "+bin(data[16])+" mask "+bin(mask[16]);    // tm_riblatch, Activate rib TMs by using local latches inside rib default value: %
+   println "cfg_trasap[4:0]: "+bin(data[11..15])+" mask "+bin(mask[11..15]);    // cfg_trasap[4:0], RAS autoprecharge time default value: %01001
+   print "Fuse disable for tm_trasap_fuse_disable is "; data[10] = ( 1 : println "active"; | 0 : println "off"; );    //tm_trasap_fuse_disable, 
+   println "cfg_ravld[5:0]: "+bin(data[4..9])+" mask "+bin(mask[4..9]);    // cfg_ravld[5:0], Shifting of RowAddressVaLiD edges default value: %100111
+   print "Fuse disable for tm_ravld_fuse_disable is "; data[3] = ( 1 : println "active"; | 0 : println "off"; );    //tm_ravld_fuse_disable, 
+   println "tm_satoggle: "+bin(data[2])+" mask "+bin(mask[2]);    // tm_satoggle, SAs also toggle (activate, sense, equalize), along with the WLs. SAE is brought up high each time the ACT command is issued until PRE command is applied default value: %
+   println "tm_saltc: "+bin(data[1])+" mask "+bin(mask[1]);    // tm_saltc, This testmode allows to simultaneously activate several wordlines that can be individually addressed. The number of activated wordlines is increased by 1 with every ACT command. default value: %
+   println "tm_wlltc: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_wlltc, Switch to non-toggle mode for the multi-wordline test. In non-toggle mode, the precharge command does not release selected Wordlines. default value: %
+}
+
+CHN009[data,mask] { //RIBCORNER_COL
+   println "Chain: Column test modes";
+   println "cfg_sa[4:0]: "+bin(data[27..31])+" mask "+bin(mask[27..31]);    // cfg_sa[4:0], Modify equalize timing (set SA OFF time if TM_SAOFFSET is active) default value: %11011
+   print "Fuse disable for tm_saoffset_fuse_disable is "; data[26] = ( 1 : println "active"; | 0 : println "off"; );    //tm_saoffset_fuse_disable, 
+   println "cfg_pwltmr[2:0]: "+bin(data[23..25])+" mask "+bin(mask[23..25]);    // cfg_pwltmr[2:0], Trim timer for sensing delay n- to p-sense default value: %111
+   println "cfg_wltmr[4:0]: "+bin(data[18..22])+" mask "+bin(mask[18..22]);    // cfg_wltmr[4:0], Word line timer trimming default value: %10111
+   print "Fuse disable for tm_wltmr_fuse_disable is "; data[17] = ( 1 : println "active"; | 0 : println "off"; );    //tm_wltmr_fuse_disable, 
+   println "cfg_ibssa[1:0]: "+bin(data[15..16])+" mask "+bin(mask[15..16]);    // cfg_ibssa[1:0], Trimming of Ibssa (Irefssa) (bias current of SSA) independently from Iref. It allows for changing the SSA strength without affecting other circuits on the chip (test and analysis). Trim steps: default,  50%, 100% default value: %
+   print "Fuse disable for tm_ib_ssa_fuse_disable is "; data[14] = ( 1 : println "active"; | 0 : println "off"; );    //tm_ib_ssa_fuse_disable, 
+   println "cfg_uctrldly[1:0]: "+bin(data[12..13])+" mask "+bin(mask[12..13]);    // cfg_uctrldly[1:0], Modifies SSA timing: Signal uctrl controls (coupled) end of equalize and start sensing. TM_UCTRLDLY shifts both timings together. default value: %01
+   println "cfg_casdly[1:0]: "+bin(data[10..11])+" mask "+bin(mask[10..11]);    // cfg_casdly[1:0], Adjust delay for internal column access timing default value: %01
+   println "cfg_cmadly[1:0]: "+bin(data[8..9])+" mask "+bin(mask[8..9]);    // cfg_cmadly[1:0], Delay CMA signal (SSA timing, starts sensing later). End of equalize not affected. Delay of the rising edge of the CMA signal gives MDQs some more time to split before sensing is started. default value: %01
+   print "Fuse disable for tm_jdcdly_fuse_disable is "; data[7] = ( 1 : println "active"; | 0 : println "off"; );    //tm_jdcdly_fuse_disable, 
+   println "cfg_wrcasdel[2:0]: "+bin(data[4..6])+" mask "+bin(mask[4..6]);    // cfg_wrcasdel[2:0], Delay trimming for write CAS default value: %
+   println "cfg_rdcasdel[2:0]: "+bin(data[1..3])+" mask "+bin(mask[1..3]);    // cfg_rdcasdel[2:0], Delay trimming for read CAS default value: %
+   print "Fuse disable for tm_rdwrcasdel_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_rdwrcasdel_fuse_disable, 
+}
+
+CHN010[data,mask] { //VREF
+   println "Chain: VREFGLBL, VREFBGR, VINT, VBURN, pump frequency";
+   println "tm_vburn_force: "+bin(data[31])+" mask "+bin(mask[31]);    // tm_vburn_force, Disable pump and gnd-clamping for external forcing of vburn default value: %
+   println "tm_pumposcon: "+bin(data[30])+" mask "+bin(mask[30]);    // tm_pumposcon, Activate the pump oscillator (for monitoring fck) default value: %
+   println "tm_vburntrim[2:0]: "+bin(data[27..29])+" mask "+bin(mask[27..29]);    // tm_vburntrim[2:0], Trim the vburn voltage (Note: Default scrambling is not done in SETI, but in generator block) default value: %
+   println "tm_vint_vblh_clamp: "+bin(data[26])+" mask "+bin(mask[26]);    // tm_vint_vblh_clamp, Vint=Vblh=Vdd, classical BI clamp default value: %
+   println "tm_vtrack_bi: "+bin(data[25])+" mask "+bin(mask[25]);    // tm_vtrack_bi, Vint/vblh in tracking mode (0.8*vext) for BI default value: %
+   println "tm_vinttrack: "+bin(data[24])+" mask "+bin(mask[24]);    // tm_vinttrack, Vint in analysis mode (0.66*vext) default value: %
+   println "cfg_pumpfcktrim[3:0]: "+bin(data[20..23])+" mask "+bin(mask[20..23]);    // cfg_pumpfcktrim[3:0], Frequency of the pump oscillators default value: %
+   print "Fuse disable for tm_pumpfcktrim_fuse_disable is "; data[19] = ( 1 : println "active"; | 0 : println "off"; );    //tm_pumpfcktrim_fuse_disable, 
+   println "tm_vrefglbmargin[3:0]: "+bin(data[15..18])+" mask "+bin(mask[15..18]);    // tm_vrefglbmargin[3:0], Globale reference voltage default value: %
+   println "cfg_vbgr_trim[4:0]: "+bin(data[10..14])+" mask "+bin(mask[10..14]);    // cfg_vbgr_trim[4:0], Bandgap voltage  (Note: Default scrambling is not done in SETI, but in generator block) default value: %
+   print "Fuse disable for tm_vbgr_trim_fuse_disable is "; data[9] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vbgr_trim_fuse_disable, 
+   println "tm_vbgr_temp_trim_en: "+bin(data[8])+" mask "+bin(mask[8]);    // tm_vbgr_temp_trim_en, Sets the bandgap to trimming mode, internal currents will be delivered to vmon_pad default value: %
+   println "tm_vbgr_temp_trim_pt_ct: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_vbgr_temp_trim_pt_ct, Selects the delivered current (ptat or ctat) default value: %
+   println "cfg_vbgr_temp_trim[4:0]: "+bin(data[2..6])+" mask "+bin(mask[2..6]);    // cfg_vbgr_temp_trim[4:0], Bandgap temperature/voltage dependancy default value: %
+   print "Fuse disable for tm_vbgr_temp_fuse_disable is "; data[1] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vbgr_temp_fuse_disable, 
+   println "tm_vburn_on: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_vburn_on, Switch on the vburn pump for the fusing of the efuses default value: %
+}
+
+CHN011[data,mask] { //IREF
+   println "Chain: Iref Trimming";
+   println "cfg_ibgr_trim[4:0]: "+bin(data[1..5])+" mask "+bin(mask[1..5]);    // cfg_ibgr_trim[4:0], Bandgap reference current trimming (Note: Default scrambling is not done in SETI, but in generator block) default value: %
+   print "Fuse disable for tm_ibgr_trim_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_ibgr_trim_fuse_disable, 
+}
+
+CHN012[data,mask] { //VINTACT1
+   println "Chain: Vint active generator configuration (spine left)";
+   println "cfg_vintact_1[1:0]: "+bin(data[5..6])+" mask "+bin(mask[5..6]);    // cfg_vintact_1[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %10
+   println "cfg_vintact_2[1:0]: "+bin(data[3..4])+" mask "+bin(mask[3..4]);    // cfg_vintact_2[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %
+   println "cfg_vintact_3[1:0]: "+bin(data[1..2])+" mask "+bin(mask[1..2]);    // cfg_vintact_3[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %01
+   print "Fuse disable for tm_vintact_1_3_fusedisable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vintact_1_3_fusedisable, 
+}
+
+CHN013[data,mask] { //VINTACT2
+   println "Chain: Vint active generator configuration (spine center/left)";
+   println "cfg_vintact_4[1:0]: "+bin(data[5..6])+" mask "+bin(mask[5..6]);    // cfg_vintact_4[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %
+   println "cfg_vintact_5[1:0]: "+bin(data[3..4])+" mask "+bin(mask[3..4]);    // cfg_vintact_5[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %10
+   println "cfg_vintact_6[1:0]: "+bin(data[1..2])+" mask "+bin(mask[1..2]);    // cfg_vintact_6[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %11
+   print "Fuse disable for tm_vintact_4_6_fusedisable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vintact_4_6_fusedisable, 
+}
+
+CHN014[data,mask] { //VINTACT3
+   println "Chain: Vint active generator configuration (spine center/right)";
+   println "cfg_vintact_7[1:0]: "+bin(data[5..6])+" mask "+bin(mask[5..6]);    // cfg_vintact_7[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %
+   println "cfg_vintact_8[1:0]: "+bin(data[3..4])+" mask "+bin(mask[3..4]);    // cfg_vintact_8[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %01
+   println "cfg_vintact_9[1:0]: "+bin(data[1..2])+" mask "+bin(mask[1..2]);    // cfg_vintact_9[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %10
+   print "Fuse disable for tm_vintact_7_9_fusedisable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vintact_7_9_fusedisable, 
+}
+
+CHN015[data,mask] { //VINTACT4
+   println "Chain: Vint active generator configuration (spine right)";
+   println "cfg_vintact_10[1:0]: "+bin(data[5..6])+" mask "+bin(mask[5..6]);    // cfg_vintact_10[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %11
+   println "cfg_vintact_11[1:0]: "+bin(data[3..4])+" mask "+bin(mask[3..4]);    // cfg_vintact_11[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %
+   println "cfg_vintact_12[1:0]: "+bin(data[1..2])+" mask "+bin(mask[1..2]);    // cfg_vintact_12[1:0], Group selection for vintact generator (off/25%/50%/on) default value: %10
+   print "Fuse disable for tm_vintact_10_12_fusedisable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vintact_10_12_fusedisable, 
+}
+
+CHN016[data,mask] { //VPPVNWLLVEQL
+   println "Chain: VNWLL, VPP, VEQL";
+   println "cfg_vppconfig[1:0]: "+bin(data[31..32])+" mask "+bin(mask[31..32]);    // cfg_vppconfig[1:0], Configurations for VPP pumps (2-stage, 3-stage, automatic) default value: %01
+   print "Fuse disable for tm_vppconfig_fuse_disable is "; data[30] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vppconfig_fuse_disable, 
+   println "cfg_vpptemp[2:0]: "+bin(data[27..29])+" mask "+bin(mask[27..29]);    // cfg_vpptemp[2:0], Activation of temperature dependent VPP regulation default value: %
+   print "Fuse disable for tm_vpptemp_fuse_disable is "; data[26] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vpptemp_fuse_disable, 
+   println "cfg_veql_clamp: "+bin(data[25])+" mask "+bin(mask[25]);    // cfg_veql_clamp, Activates clamping between veql to vdd default value: %
+   println "cfg_veqltrim[1:0]: "+bin(data[23..24])+" mask "+bin(mask[23..24]);    // cfg_veqltrim[1:0], (Note: Default scrambling is not done in SETI, but in generator block) default value: %
+   print "Fuse disable for tm_veql_fuse_disable is "; data[22] = ( 1 : println "active"; | 0 : println "off"; );    //tm_veql_fuse_disable, 
+   println "tm_veqldis: "+bin(data[21])+" mask "+bin(mask[21]);    // tm_veqldis, Disable the selective generator default value: %
+   println "cfg_vpptarget[5:0]: "+bin(data[15..20])+" mask "+bin(mask[15..20]);    // cfg_vpptarget[5:0], Wordline supply voltage trimming default value: %100000
+   print "Fuse disable for tm_vpptarget_fuse_disable is "; data[14] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vpptarget_fuse_disable, 
+   println "cfg_vnwlltrim[4:0]: "+bin(data[9..13])+" mask "+bin(mask[9..13]);    // cfg_vnwlltrim[4:0], Negative word line voltage trimming  (Note: Default scrambling is not done in SETI, but in generator block) default value: %
+   print "Fuse disable for tm_vnwll_fuse_disable is "; data[8] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vnwll_fuse_disable, 
+   println "tm_vnwll_dis: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_vnwll_dis, Disable the selective generator default value: %
+   println "tm_vppmargin[5:0]: "+bin(data[1..6])+" mask "+bin(mask[1..6]);    // tm_vppmargin[5:0], Wordline supply voltage trimming (margin test) default value: %
+   println "tm_vppdis: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_vppdis, Disable the selective generator default value: %
+}
+
+CHN017[data,mask] { //VPWLL
+   println "Chain: VPWLL";
+   println "tm_viso_bulk_ctrl: "+bin(data[14])+" mask "+bin(mask[14]);    // tm_viso_bulk_ctrl, Switch the bulk supply between viso / vnwll default value: %
+   println "cfg_visotrim[4:0]: "+bin(data[9..13])+" mask "+bin(mask[9..13]);    // cfg_visotrim[4:0], Trimming for viso  (Note: Default scrambling is not done in SETI, but in generator block) default value: %
+   print "Fuse disable for tm_visotrim_fuse_disable is "; data[8] = ( 1 : println "active"; | 0 : println "off"; );    //tm_visotrim_fuse_disable, 
+   println "cfg_visoconfig[1:0]: "+bin(data[6..7])+" mask "+bin(mask[6..7]);    // cfg_visoconfig[1:0], Configurations for VISO generator (Note: Default scrambling is not done in SETI, but in generator block) default value: %
+   println "tm_vpwellext: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_vpwellext, Disables generator for external forcing default value: %
+   println "tm_vpwelldis: "+bin(data[4])+" mask "+bin(mask[4]);    // tm_vpwelldis, Disables the vpwell generator and clamps to gnd default value: %
+   println "cfg_vpwelltrim[2:0]: "+bin(data[1..3])+" mask "+bin(mask[1..3]);    // cfg_vpwelltrim[2:0], Vpwell voltage trimming (Note: Default scrambling is not done in SETI, but in generator block) default value: %
+   print "Fuse disable for tm_vpwell_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vpwell_fuse_disable, 
+}
+
+CHN018[data,mask] { //VINTVBLH
+   println "Chain: VINT, VINT overclock, VBLH";
+   println "cfg_vint_cas_only: "+bin(data[34])+" mask "+bin(mask[34]);    // cfg_vint_cas_only, Enables the vint active generators only for RD/WR default value: %
+   println "cfg_vblh_ras_only: "+bin(data[33])+" mask "+bin(mask[33]);    // cfg_vblh_ras_only, Enables the vblh active generators only for ACT, disabled during RD/WR default value: %
+   println "cfg_vint_no_srf: "+bin(data[32])+" mask "+bin(mask[32]);    // cfg_vint_no_srf, Disable the vint active generators in SRF mode default value: %
+   println "cfg_vblh_no_srf: "+bin(data[31])+" mask "+bin(mask[31]);    // cfg_vblh_no_srf, Disable the vblh active generators in SRF mode default value: %
+   print "Fuse disable for tm_vint_vblh_mode_fuse_disable is "; data[30] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vint_vblh_mode_fuse_disable, 
+   println "tm_genactive: "+bin(data[29])+" mask "+bin(mask[29]);    // tm_genactive, All generators to active mode, all pumps enabled to maximum strength default value: %
+   println "cfg_ocslope[1:0]: "+bin(data[27..28])+" mask "+bin(mask[27..28]);    // cfg_ocslope[1:0], Vint overclock mode: slope of vint following vext default value: %
+   print "Fuse disable for tm_vintoc_fuse_disable is "; data[26] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vintoc_fuse_disable, 
+   println "tm_vintclamp_active[1:0]: "+bin(data[24..25])+" mask "+bin(mask[24..25]);    // tm_vintclamp_active[1:0], Limits the number of vint active generators in 100% mode (for limiting currents in BI) default value: %
+   println "tm_vblh_connect: "+bin(data[23])+" mask "+bin(mask[23]);    // tm_vblh_connect, Connects all VBLH nets default value: %
+   println "tm_vblhsupressactive: "+bin(data[22])+" mask "+bin(mask[22]);    // tm_vblhsupressactive, 0: standard VBLH generator control; 1: active generator always disabled (standby stays on) - combine with TMGENACTIVE, VINT_ACT_OPL? default value: %
+   println "tm_vintmargin[5:0]: "+bin(data[16..21])+" mask "+bin(mask[16..21]);    // tm_vintmargin[5:0], Vint voltage trimming (margin test) default value: %
+   println "cfg_vinttarget[5:0]: "+bin(data[10..15])+" mask "+bin(mask[10..15]);    // cfg_vinttarget[5:0], Vint voltage trimming default value: %011011
+   print "Fuse disable for tm_vinttrim_fuse_disable is "; data[9] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vinttrim_fuse_disable, 
+   println "tm_vintdis: "+bin(data[8])+" mask "+bin(mask[8]);    // tm_vintdis, Disable vint generators default value: %
+   println "cfg_vblhtrim[5:0]: "+bin(data[2..7])+" mask "+bin(mask[2..7]);    // cfg_vblhtrim[5:0], Vblh voltage trimming default value: %
+   print "Fuse disable for tm_vblhtrim_fuse_disable is "; data[1] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vblhtrim_fuse_disable, 
+   println "tm_vblhdis: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_vblhdis, Disable the selective generator default value: %
+}
+
+CHN019[data,mask] { //VPLVBLEQ
+   println "Chain: VPL, VBLEQ";
+   println "tm_vbleqmargin[5:0]: "+bin(data[11..16])+" mask "+bin(mask[11..16]);    // tm_vbleqmargin[5:0], Vbleq voltage trimming (Note: Default scrambling is not done in SETI, but in generator block) default value: %
+   println "tm_vbleqdis: "+bin(data[10])+" mask "+bin(mask[10]);    // tm_vbleqdis, Disable vbleq generator default value: %
+   println "cfg_vpl2config[1:0]: "+bin(data[8..9])+" mask "+bin(mask[8..9]);    // cfg_vpl2config[1:0], Configuration for VPL2 generators default value: %
+   print "Fuse disable for tm_vpl2config_fuse_disable is "; data[7] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vpl2config_fuse_disable, 
+   println "tm_vplmargin[5:0]: "+bin(data[1..6])+" mask "+bin(mask[1..6]);    // tm_vplmargin[5:0], Vpl voltage trimming (Note: Default scrambling is not done in SETI, but in generator block) default value: %
+   println "tm_vpldis: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_vpldis, Disable vpl generator default value: %
+}
+
+CHN020[data,mask] { //VBB
+   println "Chain: VBB";
+   println "tm_spare_l_2[1:0]: "+bin(data[14..15])+" mask "+bin(mask[14..15]);    // tm_spare_l_2[1:0], Spare TM (with laser fuses only) default value: %
+   print "Fuse disable for tm_spare_l_2_fuse_disable is "; data[13] = ( 1 : println "active"; | 0 : println "off"; );    //tm_spare_l_2_fuse_disable, 
+   println "tm_spare_l_1: "+bin(data[12])+" mask "+bin(mask[12]);    // tm_spare_l_1, Spare TM (with efuse) default value: %
+   print "Fuse disable for tm_spare_l_1_fuse_disable is "; data[11] = ( 1 : println "active"; | 0 : println "off"; );    //tm_spare_l_1_fuse_disable, 
+   println "cfg_vset_vblh_config[1:0]: "+bin(data[9..10])+" mask "+bin(mask[9..10]);    // cfg_vset_vblh_config[1:0], Configuration of VBLH reference generators default value: %
+   println "cfg_vset_vint_config[1:0]: "+bin(data[7..8])+" mask "+bin(mask[7..8]);    // cfg_vset_vint_config[1:0], Configuration of VINT reference generators default value: %
+   print "Fuse disable for tm_vset_config_fuse_disable is "; data[6] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vset_config_fuse_disable, Forcing of internal vblh reference voltage of the vblhact generators (for vblh ~300 mV)
+   println "tm_vbbdis: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_vbbdis, Disable vbb generator default value: %
+   println "cfg_vbbtrim[3:0]: "+bin(data[1..4])+" mask "+bin(mask[1..4]);    // cfg_vbbtrim[3:0], Vbb voltage trimming default value: %
+   print "Fuse disable for tm_vbbtrim_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_vbbtrim_fuse_disable, 
+}
+
+CHN021[data,mask] { //OCD_CAL
+   println "Chain: ";
+   println "cfg_ocdslew[1:0]: "+bin(data[14..15])+" mask "+bin(mask[14..15]);    // cfg_ocdslew[1:0], Trim slew rate default value: %
+   print "Fuse disable for tm_ocdslew_fuse_disable is "; data[13] = ( 1 : println "active"; | 0 : println "off"; );    //tm_ocdslew_fuse_disable, 
+   println "cfg_ron_trim[1:0]: "+bin(data[11..12])+" mask "+bin(mask[11..12]);    // cfg_ron_trim[1:0], Trim offset for Ron and Rtt default value: %
+   println "cfg_ocdpf[4:0]: "+bin(data[6..10])+" mask "+bin(mask[6..10]);    // cfg_ocdpf[4:0], Strength pfet as default, if no ZQCx command is issued. Nfet will be calibrated against Pfet automatically. Only Pfet necessary. default value: %10000
+   print "Fuse disable for tm_ocdpf_fuse_disable is "; data[5] = ( 1 : println "active"; | 0 : println "off"; );    //tm_ocdpf_fuse_disable, 
+   println "tm_ocdcal_ctrl[2:0]: "+bin(data[2..4])+" mask "+bin(mask[2..4]);    // tm_ocdcal_ctrl[2:0],  default value: %
+   println "tm_ocdcal_sel[1:0]: "+bin(data[0..1])+" mask "+bin(mask[0..1]);    // tm_ocdcal_sel[1:0], Select N/P for test mode default value: %
+}
+
+CHN022[data,mask] { //OCD_READONLY
+   println "Chain: Only read-out of (self- ?)calibrated values. No load command required. Chain is updated whenever tb_clk is running and se == 0.";
+   println "tm_vref_comp[2:0]: "+bin(data[11..13])+" mask "+bin(mask[11..13]);    // tm_vref_comp[2:0], Signed Result of Vref compensation default value: %
+   println "tm_zqpresent: "+bin(data[10])+" mask "+bin(mask[10]);    // tm_zqpresent, Result of ZQ presence detection default value: %
+   println "tm_odcpf[4:0]: "+bin(data[5..9])+" mask "+bin(mask[5..9]);    // tm_odcpf[4:0], Pfet drive strength (0=weak, 31=strong) default value: %
+   println "tm_ocdnf[4:0]: "+bin(data[0..4])+" mask "+bin(mask[0..4]);    // tm_ocdnf[4:0], Nfet drive strength (0=weak, 31=strong) default value: %
+}
+
+CHN023[data,mask] { //VMON
+   println "Chain: Select monitor voltages, REDSWP, x4, x8, efuse disable, etc.";
+   println "cfg_x4: "+bin(data[12])+" mask "+bin(mask[12]);    // cfg_x4, Chip organization as x4 default value: %
+   println "cfg_x8: "+bin(data[11])+" mask "+bin(mask[11]);    // cfg_x8, Chip organization as x8 default value: %
+   print "Fuse disable for tm_x4x8_fuse_disable is "; data[10] = ( 1 : println "active"; | 0 : println "off"; );    //tm_x4x8_fuse_disable, 
+   println "dis_efuse: "+bin(data[9])+" mask "+bin(mask[9]);    // dis_efuse, Enable efuse outputs default value: %1
+   print "Fuse disable for tm_dis_efuse_fuse_disable is "; data[8] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dis_efuse_fuse_disable, 
+   println "tm_refswp: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_refswp, Connect bandgap testpad with bandgap voltage default value: %
+   println "tm_vmon_sel[4:0]: "+bin(data[2..6])+" mask "+bin(mask[2..6]);    // tm_vmon_sel[4:0], Selector for output voltages of VMONC/W default value: %
+   println "tm_vmonc: "+bin(data[1])+" mask "+bin(mask[1]);    // tm_vmonc, Activation of VMONC default value: %
+   println "tm_vmonw: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_vmonw, Activation of VMONW pad default value: %
+}
+
+CHN024[data,mask] { //SRF
+   println "Chain: ";
+   println "cfg_srf_slope[3:0]: "+bin(data[8..11])+" mask "+bin(mask[8..11]);    // cfg_srf_slope[3:0], Set retention slope (table implemented in hardware) default value: %
+   print "Fuse disable for tm_srf_slope_fuse_disable is "; data[7] = ( 1 : println "active"; | 0 : println "off"; );    //tm_srf_slope_fuse_disable, 
+   println "cfg_srf_lfo_trim_fine[2:0]: "+bin(data[4..6])+" mask "+bin(mask[4..6]);    // cfg_srf_lfo_trim_fine[2:0], Trim analog low frequency oscillator for self refresh, fine default value: %000
+   println "cfg_srf_lfo_trim_fract[2:0]: "+bin(data[1..3])+" mask "+bin(mask[1..3]);    // cfg_srf_lfo_trim_fract[2:0], Trim analog low frequency oscillator for self refresh, fractal default value: %000
+   print "Fuse disable for tm_srf_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_srf_fuse_disable, 
+}
+
+CHN025[data,mask] { //TEMP_SENSOR
+   println "Chain: Pass/fail bit needs an extra capture client to keep the info stable for multiple readout, no automatic capture";
+   println "cfg_ts_offset[6:0]: "+bin(data[14..20])+" mask "+bin(mask[14..20]);    // cfg_ts_offset[6:0], TS offset trimming default value: %
+   print "Fuse disable for tm_ts_offset_fuse_disable is "; data[13] = ( 1 : println "active"; | 0 : println "off"; );    //tm_ts_offset_fuse_disable, 
+   println "cfg_ts_slope[3:0]: "+bin(data[9..12])+" mask "+bin(mask[9..12]);    // cfg_ts_slope[3:0], TS slope trimming default value: %
+   print "Fuse disable for tm_ts_slope_fuse_disable is "; data[8] = ( 1 : println "active"; | 0 : println "off"; );    //tm_ts_slope_fuse_disable, 
+   println "tm_ts_octrl: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_ts_octrl, Redirect temp code from register default value: %
+   println "tm_ts_fast: "+bin(data[6])+" mask "+bin(mask[6]);    // tm_ts_fast, Faster sensor cycles, clock period 5us default value: %
+   println "tm_ts_slow: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_ts_slow, Slower sensor cycles, period 160us default value: %
+   println "tm_tsstdclkmux: "+bin(data[4])+" mask "+bin(mask[4]);    // tm_tsstdclkmux, Switches mux b/w test clock and self refresh clock for T.S. offset trimming. Default: Self refresh clock. default value: %
+   println "tm_tsadcclk: "+bin(data[3])+" mask "+bin(mask[3]);    // tm_tsadcclk, Generate a clock for the TS, if tsclkmux=1 default value: %
+   println "tm_tsadc: "+bin(data[2])+" mask "+bin(mask[2]);    // tm_tsadc, Enable self-test of AD converter (ADC) of the temperature sensor, Disable sensor diode, Connect both comparator inputs to two connectors of the resistor divider. default value: %
+   println "tm_ts_adc_pass: "+bin(data[1])+" mask "+bin(mask[1]);    // tm_ts_adc_pass, PASS bit for ADC BIST, functionality of pass and fail assessment now into pass only - fail info for TM_TSADCFAIL default value: %
+   println "tm_ts_adc_fail: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_ts_adc_fail, Fail bit for ADC BIST, Read-only default value: %
+}
+
+CHN026[data,mask] { //BURNIN
+   println "Chain: Only the two burnin modes, for BI requirements this chain must not be longer";
+   println "tm_bitrim_veql: "+bin(data[2])+" mask "+bin(mask[2]);    // tm_bitrim_veql, Change range of VEQL trimming for BI default value: %
+   println "tm_bitrim_vpp: "+bin(data[1])+" mask "+bin(mask[1]);    // tm_bitrim_vpp, Change range of VPP trimming for BI default value: %
+   println "tm_bidc: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_bidc, Wordline behaviour default value: %
+}
+
+CHN027[data,mask] { //CMDRCV
+   println "Chain: Bias currents, setup/hold adjustment delay";
+   println "cfg_cmd_biasrcv1[1:0]: "+bin(data[6..7])+" mask "+bin(mask[6..7]);    // cfg_cmd_biasrcv1[1:0], Delay for stage 1 Default + trim values default value: %01
+   println "cfg_cmd_biasrcv2[1:0]: "+bin(data[4..5])+" mask "+bin(mask[4..5]);    // cfg_cmd_biasrcv2[1:0], Delay for stage 2 Default + trim values default value: %01
+   println "cfg_cmd_tshadj[2:0]: "+bin(data[1..3])+" mask "+bin(mask[1..3]);    // cfg_cmd_tshadj[2:0], Adjust setup/hold for commandsDefault + trim values default value: %011
+   print "Fuse disable for tm_cmdrcv_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_cmdrcv_fuse_disable, 
+}
+
+CHN028[data,mask] { //ADDRCV
+   println "Chain: Bias currents, setup/hold adjustment delay";
+   println "cfg_add_biasrcv1[1:0]: "+bin(data[6..7])+" mask "+bin(mask[6..7]);    // cfg_add_biasrcv1[1:0], Delay for stage 1 Default + trim values default value: %01
+   println "cfg_add_biasrcv2[1:0]: "+bin(data[4..5])+" mask "+bin(mask[4..5]);    // cfg_add_biasrcv2[1:0], Delay for stage 2 Default + trim values default value: %01
+   println "cfg_add_tshadj[2:0]: "+bin(data[1..3])+" mask "+bin(mask[1..3]);    // cfg_add_tshadj[2:0], Adjust setup/hold for commandsDefault + trim values default value: %011
+   print "Fuse disable for tm_addrcv_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_addrcv_fuse_disable, 
+}
+
+CHN029[data,mask] { //CLKRCV
+   println "Chain: Bias currents, setup/hold adjustment delay, intensive CKE counter, latency counter trim";
+   println "tm_spare_c[3:0]: "+bin(data[18..21])+" mask "+bin(mask[18..21]);    // tm_spare_c[3:0], Spare TM in chip center default value: %
+   print "Fuse disable for tm_spare_c_fuse_disable is "; data[17] = ( 1 : println "active"; | 0 : println "off"; );    //tm_spare_c_fuse_disable, 
+   println "cfg_lcclkgate_dis: "+bin(data[16])+" mask "+bin(mask[16]);    // cfg_lcclkgate_dis, Disable clock gating in latency counter default value: %
+   println "cfg_lcpartrim[5:0]: "+bin(data[10..15])+" mask "+bin(mask[10..15]);    // cfg_lcpartrim[5:0], Latency cntr PAR signal timing position default value: %011011
+   print "Fuse disable for tm_lc_fuse_disable is "; data[9] = ( 1 : println "active"; | 0 : println "off"; );    //tm_lc_fuse_disable, 
+   println "tm_pwrdn: "+bin(data[8])+" mask "+bin(mask[8]);    // tm_pwrdn, Turn off internal cke signal to enter power down. Turns off all but CKE receiver. default value: %
+   println "cfg_cke_biasrcv1[1:0]: "+bin(data[6..7])+" mask "+bin(mask[6..7]);    // cfg_cke_biasrcv1[1:0], Bias current for first rcv stage default value: %01
+   println "cfg_cke_biasrcv2[1:0]: "+bin(data[4..5])+" mask "+bin(mask[4..5]);    // cfg_cke_biasrcv2[1:0], Bias current for second rcv stage default value: %01
+   println "cfg_cke_tshadj[2:0]: "+bin(data[1..3])+" mask "+bin(mask[1..3]);    // cfg_cke_tshadj[2:0], Delay adjust for setup/hold timing default value: %011
+   print "Fuse disable for tm_ckercv_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_ckercv_fuse_disable, 
+}
+
+CHN030[data,mask] { //BYTE_L_1
+   println "Chain: Testmodes for lower byte lane";
+   println "cfg_dqrcv_bias1_l[1:0]: "+bin(data[29..30])+" mask "+bin(mask[29..30]);    // cfg_dqrcv_bias1_l[1:0], Bias current for first rcv stage default value: %01
+   println "cfg_dqrcv_bias2_l[1:0]: "+bin(data[27..28])+" mask "+bin(mask[27..28]);    // cfg_dqrcv_bias2_l[1:0], Bias current for second rcv stage default value: %01
+   println "cfg_dqrcv_shadj_l[2:0]: "+bin(data[24..26])+" mask "+bin(mask[24..26]);    // cfg_dqrcv_shadj_l[2:0], Delay adjust for setup/hold timing default value: %100
+   print "Fuse disable for tm_dql_fuse_disable is "; data[23] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dql_fuse_disable, 
+   println "cfg_dqss_base_l[2:0]: "+bin(data[20..22])+" mask "+bin(mask[20..22]);    // cfg_dqss_base_l[2:0], Trim tdqss plus write leveling together default value: %100
+   println "cfg_dqss_offset_l[2:0]: "+bin(data[17..19])+" mask "+bin(mask[17..19]);    // cfg_dqss_offset_l[2:0], Trim tdqss only default value: %011
+   println "cfg_wrlvl_base_l[2:0]: "+bin(data[14..16])+" mask "+bin(mask[14..16]);    // cfg_wrlvl_base_l[2:0], Trim write leveling default value: %100
+   println "cfg_wrlvl_offset_l[2:0]: "+bin(data[11..13])+" mask "+bin(mask[11..13]);    // cfg_wrlvl_offset_l[2:0], Trim write leveling only default value: %011
+   print "Fuse disable for tm_dqssl_fuse_disable is "; data[10] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dqssl_fuse_disable, 
+   println "tm_mpr_write_l: "+bin(data[9])+" mask "+bin(mask[9]);    // tm_mpr_write_l, Write into the MPR, needed for the SETI personalization bit default value: %
+   println "tm_seti_mpr_out_l: "+bin(data[8])+" mask "+bin(mask[8]);    // tm_seti_mpr_out_l, Switch from MPR read to SETI read (only MRS2SETI mode) default value: %
+   println "tm_ringo_sel: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_ringo_sel, Select between normal / low vt ringo default value: %
+   println "tm_srf_osc_me: "+bin(data[6])+" mask "+bin(mask[6]);    // tm_srf_osc_me, Srfras and ringo signals switched to DQ0 and DQ1 (srf) and DQ2 and DQ3 (ringo) as outputs default value: %
+   println "tm_ts_readout: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_ts_readout, TM reconnects all SETI bits to output for trimming, in functional mode the TM is off default value: %
+   println "cfg_tdqsq_l: "+bin(data[4])+" mask "+bin(mask[4]);    // cfg_tdqsq_l, TDQSQ trimming for lower byte default value: %
+   print "Fuse disable for tm_tdqsq_l_fuse_disable is "; data[3] = ( 1 : println "active"; | 0 : println "off"; );    //tm_tdqsq_l_fuse_disable, 
+   println "tm_dllclkmon_l: "+bin(data[2])+" mask "+bin(mask[2]);    // tm_dllclkmon_l, Switch DLL CLK to output DQS default value: %
+   println "tm_dqrcvon_l: "+bin(data[1])+" mask "+bin(mask[1]);    // tm_dqrcvon_l, Switch all DQ and DQS receiver permanently on. Not needed by PT. default value: %
+   println "tm_nadq1_l: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_nadq1_l, Non ACTM DQ drive 1. 0: non ACTM DQ's(4..7) on tri-state, 1: non ACTM DQ's on "1". Only for lower byte lane necessary. default value: %
+}
+
+CHN031[data,mask] { //BYTE_L_2
+   println "Chain: Testmodes for lower byte lane";
+   println "tm_spare_r0[3:0]: "+bin(data[5..8])+" mask "+bin(mask[5..8]);    // tm_spare_r0[3:0], Spare TM on right side default value: %
+   print "Fuse disable for tm_spare_r0_fuse_disable is "; data[4] = ( 1 : println "active"; | 0 : println "off"; );    //tm_spare_r0_fuse_disable, 
+   println "tm_fredpulse_init: "+bin(data[3])+" mask "+bin(mask[3]);    // tm_fredpulse_init, Init a pulse for the redundancy laser fuses default value: %
+   println "tm_fredpulse_set: "+bin(data[2])+" mask "+bin(mask[2]);    // tm_fredpulse_set, Set this pulse, both modes needed for new fuse readout default value: %
+   println "tm_pumpfckmon: "+bin(data[1])+" mask "+bin(mask[1]);    // tm_pumpfckmon, Monitor for pump oscillator frequency default value: %
+   println "tm_remap_dq: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_remap_dq, Map upper to lower byte for ACTM in x4/x8 default value: %
+}
+
+CHN032[data,mask] { //BYTE_U
+   println "Chain: Testmodes for upper byte lane; fredpulse";
+   println "tm_spare_r1[3:0]: "+bin(data[28..31])+" mask "+bin(mask[28..31]);    // tm_spare_r1[3:0], Spare TM on right side default value: %
+   print "Fuse disable for tm_spare_r1_fuse_disable is "; data[27] = ( 1 : println "active"; | 0 : println "off"; );    //tm_spare_r1_fuse_disable, 
+   println "cfg_dqrcv_bias1_u[1:0]: "+bin(data[25..26])+" mask "+bin(mask[25..26]);    // cfg_dqrcv_bias1_u[1:0], Bias current for first rcv stage default value: %01
+   println "cfg_dqrcv_bias2_u[1:0]: "+bin(data[23..24])+" mask "+bin(mask[23..24]);    // cfg_dqrcv_bias2_u[1:0], Bias current for second rcv stage default value: %01
+   println "cfg_dqrcv_shadj_u[2:0]: "+bin(data[20..22])+" mask "+bin(mask[20..22]);    // cfg_dqrcv_shadj_u[2:0], Delay adjust for setup/hold timing default value: %100
+   print "Fuse disable for tm_dqu_fuse_disable is "; data[19] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dqu_fuse_disable, 
+   println "cfg_dqss_base_u[2:0]: "+bin(data[16..18])+" mask "+bin(mask[16..18]);    // cfg_dqss_base_u[2:0], Trim tdqss plus write leveling together default value: %100
+   println "cfg_dqss_offset_u[2:0]: "+bin(data[13..15])+" mask "+bin(mask[13..15]);    // cfg_dqss_offset_u[2:0], Trim tdqss only default value: %011
+   println "cfg_wrlvl_base_u[2:0]: "+bin(data[10..12])+" mask "+bin(mask[10..12]);    // cfg_wrlvl_base_u[2:0], Trim write leveling default value: %100
+   println "cfg_wrlvl_offset_u[2:0]: "+bin(data[7..9])+" mask "+bin(mask[7..9]);    // cfg_wrlvl_offset_u[2:0], Trim write leveling only default value: %011
+   print "Fuse disable for tm_dqssu_fuse_disable is "; data[6] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dqssu_fuse_disable, Typo in signal name, should be tmdqssu
+   println "tm_dllclkmon_u: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_dllclkmon_u, Switch DLL CLK to output DQS default value: %
+   println "cfg_tdqsq_u: "+bin(data[4])+" mask "+bin(mask[4]);    // cfg_tdqsq_u, TDQSQ trimming for upper byte default value: %
+   print "Fuse disable for tm_tdqsq_u_fuse_disable is "; data[3] = ( 1 : println "active"; | 0 : println "off"; );    //tm_tdqsq_u_fuse_disable, 
+   println "tm_dpu[1:0]: "+bin(data[1..2])+" mask "+bin(mask[1..2]);    // tm_dpu[1:0], Datapath monitoring for upper byte default value: %
+   println "tm_dqrcvon_u: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_dqrcvon_u, Switch all DQ and DQS receiver permanently on default value: %
+}
+
+CHN036[data,mask] { //EFBLK1_CTRL
+   println "Chain: EFuse Block control with 5 control signals";
+   println "tm_ef1_rd: "+bin(data[9])+" mask "+bin(mask[9]);    // tm_ef1_rd, Transfer fuselatch content into shiftregisters default value: %
+   println "tm_ef1_wr: "+bin(data[8])+" mask "+bin(mask[8]);    // tm_ef1_wr, Transfer shift register content into fuselatch default value: %
+   println "tm_ef1_reset_shiftreg: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_ef1_reset_shiftreg, Reset shift register default value: %
+   println "tm_ef1_burn: "+bin(data[6])+" mask "+bin(mask[6]);    // tm_ef1_burn, Switch between normal SETI clock and "clk_burn" clock default value: %
+   println "tm_ef1_clk_burn: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_ef1_clk_burn, Generate slow clock for burn (switch on-off etc.) default value: %
+   println "tm_ef1_sense: "+bin(data[4])+" mask "+bin(mask[4]);    // tm_ef1_sense, Sense the fuses (to be combined with "normal" sense event) default value: %
+   println "tm_ef1_margup: "+bin(data[3])+" mask "+bin(mask[3]);    // tm_ef1_margup, Change sense conditions default value: %
+   println "tm_ef1_margdown: "+bin(data[2])+" mask "+bin(mask[2]);    // tm_ef1_margdown, Change sense conditions default value: %
+   println "tm_ef1_reftap: "+bin(data[1])+" mask "+bin(mask[1]);    // tm_ef1_reftap, Change sense conditions default value: %
+   println "tm_ef1_reftap2: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_ef1_reftap2, Change sense conditions default value: %
+}
+
+CHN037[data,mask] { //EFBLK1_DATA
+   println "Chain: EFuse Block fuse information; not used in FE, therefore no limitation regarding chain length";
+   println "ef1_fuse_string[35:0]: "+bin(data[0..35])+" mask "+bin(mask[0..35]);    // ef1_fuse_string[35:0], Efuses default value: %
+}
+
+CHN038[data,mask] { //EFBLK2_CTRL
+   println "Chain: EFuse Block control with 5 control signals";
+   println "tm_ef2_rd: "+bin(data[9])+" mask "+bin(mask[9]);    // tm_ef2_rd, Transfer fuselatch content into shiftregisters default value: %
+   println "tm_ef2_wr: "+bin(data[8])+" mask "+bin(mask[8]);    // tm_ef2_wr, Transfer shift register content into fuselatch default value: %
+   println "tm_ef2_reset_shiftreg: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_ef2_reset_shiftreg, Reset shift register default value: %
+   println "tm_ef2_burn: "+bin(data[6])+" mask "+bin(mask[6]);    // tm_ef2_burn, Switch between normal SETI clock and "clk_burn" clock default value: %
+   println "tm_ef2_clk_burn: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_ef2_clk_burn, Generate slow clock for burn (switch on-off etc.) default value: %
+   println "tm_ef2_sense: "+bin(data[4])+" mask "+bin(mask[4]);    // tm_ef2_sense, Sense the fuses (to be combined with "normal" sense event) default value: %
+   println "tm_ef2_margup: "+bin(data[3])+" mask "+bin(mask[3]);    // tm_ef2_margup, Change sense conditions default value: %
+   println "tm_ef2_margdown: "+bin(data[2])+" mask "+bin(mask[2]);    // tm_ef2_margdown, Change sense conditions default value: %
+   println "tm_ef2_reftap: "+bin(data[1])+" mask "+bin(mask[1]);    // tm_ef2_reftap, Change sense conditions default value: %
+   println "tm_ef2_reftap2: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_ef2_reftap2, Change sense conditions default value: %
+}
+
+CHN039[data,mask] { //EFBLK2_DATA
+   println "Chain: EFuse Block fuse information; not used in FE, therefore no limitation regarding chain length";
+   println "ef2_fuse_string[35:0]: "+bin(data[0..35])+" mask "+bin(mask[0..35]);    // ef2_fuse_string[35:0], Efuses default value: %
+}
+
+CHN048[data,mask] { //EFBLKSBR_CTRL
+   println "Chain: EFuse Block control with 5 control signals";
+   println "tm_efsbr_rd: "+bin(data[9])+" mask "+bin(mask[9]);    // tm_efsbr_rd, Transfer fuselatch content into shiftregisters default value: %
+   println "tm_efsbr_wr: "+bin(data[8])+" mask "+bin(mask[8]);    // tm_efsbr_wr, Transfer shift register content into fuselatch default value: %
+   println "tm_efsbr_reset_shiftreg: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_efsbr_reset_shiftreg, Reset shift register default value: %
+   println "tm_efsbr_burn: "+bin(data[6])+" mask "+bin(mask[6]);    // tm_efsbr_burn, Switch between normal SETI clock and "clk_burn" clock default value: %
+   println "tm_efsbr_clk_burn: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_efsbr_clk_burn, Generate slow clock for burn (switch on-off etc.) default value: %
+   println "tm_efsbr_sense: "+bin(data[4])+" mask "+bin(mask[4]);    // tm_efsbr_sense, Sense the fuses (to be combined with "normal" sense event) default value: %
+   println "tm_efsbr_margup: "+bin(data[3])+" mask "+bin(mask[3]);    // tm_efsbr_margup, Change sense conditions. margin[1] is marginup. margin[0] is margindown default value: %
+   println "tm_efsbr_margdown: "+bin(data[2])+" mask "+bin(mask[2]);    // tm_efsbr_margdown, Change sense conditions. margin[1] is marginup. margin[0] is margindown default value: %
+   println "tm_efsbr_reftap[1:0]: "+bin(data[0..1])+" mask "+bin(mask[0..1]);    // tm_efsbr_reftap[1:0], Change sense conditions. reftap[1] is reftap in schematic, reftap[0] is reftap2 in schematic default value: %
+}
+
+CHN049[data,mask] { //EFBLKSBR_DATA1
+   println "Chain: EFuse Block fuse information; not used in FE, therefore no limitation regarding chain length";
+   println "efsbr_fuse_hlvb_2m: "+bin(data[57])+" mask "+bin(mask[57]);    // efsbr_fuse_hlvb_2m, Chip not repairable due to too many fails default value: %
+   println "efsbr_fuse_bi: "+bin(data[56])+" mask "+bin(mask[56]);    // efsbr_fuse_bi, Chip repaired after BI default value: %
+   println "efsbr_fuse_p4: "+bin(data[55])+" mask "+bin(mask[55]);    // efsbr_fuse_p4, Chip repaired after P4 default value: %
+   println "efsbr_fuse_p2: "+bin(data[54])+" mask "+bin(mask[54]);    // efsbr_fuse_p2, Chip repaired after P2 default value: %
+   println "efsbr_fuse_globdis[3:0]: "+bin(data[50..53])+" mask "+bin(mask[50..53]);    // efsbr_fuse_globdis[3:0], Global disable default value: %
+   println "efsbr_fuse_col0[6:0]: "+bin(data[43..49])+" mask "+bin(mask[43..49]);    // efsbr_fuse_col0[6:0], Column address [3:9] of 1st sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_col1[6:0]: "+bin(data[36..42])+" mask "+bin(mask[36..42]);    // efsbr_fuse_col1[6:0], Column address [3:9] of 2nd sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_col2[6:0]: "+bin(data[29..35])+" mask "+bin(mask[29..35]);    // efsbr_fuse_col2[6:0], Column address [3:9] of 3rd sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_col3[6:0]: "+bin(data[22..28])+" mask "+bin(mask[22..28]);    // efsbr_fuse_col3[6:0], Column address [3:9] of 4th sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_col4[6:0]: "+bin(data[15..21])+" mask "+bin(mask[15..21]);    // efsbr_fuse_col4[6:0], Column address [3:9] of 5th sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_ba0[1:0]: "+bin(data[13..14])+" mask "+bin(mask[13..14]);    // efsbr_fuse_ba0[1:0], Bank Address [0:1] of 1st sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_ba1[1:0]: "+bin(data[11..12])+" mask "+bin(mask[11..12]);    // efsbr_fuse_ba1[1:0], Bank Address [0:1] of 2nd sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_ba2[1:0]: "+bin(data[9..10])+" mask "+bin(mask[9..10]);    // efsbr_fuse_ba2[1:0], Bank Address [0:1] of 3rd sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_ba3[1:0]: "+bin(data[7..8])+" mask "+bin(mask[7..8]);    // efsbr_fuse_ba3[1:0], Bank Address [0:1] of 4th sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_ba4[1:0]: "+bin(data[5..6])+" mask "+bin(mask[5..6]);    // efsbr_fuse_ba4[1:0], Bank Address [0:1] of 5th sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_en0: "+bin(data[4])+" mask "+bin(mask[4]);    // efsbr_fuse_en0, Enable 1st sbr repair default value: %
+   println "efsbr_fuse_en1: "+bin(data[3])+" mask "+bin(mask[3]);    // efsbr_fuse_en1, Enable 2nd sbr repair default value: %
+   println "efsbr_fuse_en2: "+bin(data[2])+" mask "+bin(mask[2]);    // efsbr_fuse_en2, Enable 3rd sbr repair default value: %
+   println "efsbr_fuse_en3: "+bin(data[1])+" mask "+bin(mask[1]);    // efsbr_fuse_en3, Enable 4th sbr repair default value: %
+   println "efsbr_fuse_en4: "+bin(data[0])+" mask "+bin(mask[0]);    // efsbr_fuse_en4, Enable 5th sbr repair default value: %
+}
+
+CHN050[data,mask] { //EFBLKSBR_DATA2
+   println "Chain: EFuse Block fuse information; not used in FE, therefore no limitation regarding chain length";
+   println "efsbr_fuse_row0[14:0]: "+bin(data[60..74])+" mask "+bin(mask[60..74]);    // efsbr_fuse_row0[14:0], Row Address of 1st sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_row1[14:0]: "+bin(data[45..59])+" mask "+bin(mask[45..59]);    // efsbr_fuse_row1[14:0], Row Address of 2nd sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_row2[14:0]: "+bin(data[30..44])+" mask "+bin(mask[30..44]);    // efsbr_fuse_row2[14:0], Row Address of 3rd sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_row3[14:0]: "+bin(data[15..29])+" mask "+bin(mask[15..29]);    // efsbr_fuse_row3[14:0], Row Address of 4th sbr repair (reversed order!) default value: %
+   println "efsbr_fuse_row4[14:0]: "+bin(data[0..14])+" mask "+bin(mask[0..14]);    // efsbr_fuse_row4[14:0], Row Address of 5th sbr repair (reversed order!) default value: %
+}
+
+CHN051[data,mask] { //SBR_CONTROL
+   println "Chain: Single Bit Repair Control in Global Control";
+   println "tm_sbr_sorp: "+bin(data[13])+" mask "+bin(mask[13]);    // tm_sbr_sorp, Switch on sorp "soft repair" mode default value: %
+   println "tm_sbr_en: "+bin(data[12])+" mask "+bin(mask[12]);    // tm_sbr_en, Enable sbr functionality ny testmode default value: %
+   println "tm_sbr_resetfuseinfo: "+bin(data[11])+" mask "+bin(mask[11]);    // tm_sbr_resetfuseinfo, Reset enable fuse information captured during sorp entry (needed for selective sram off) default value: %
+   println "tm_sbr_resetfail: "+bin(data[10])+" mask "+bin(mask[10]);    // tm_sbr_resetfail, Reset fail flag in the sbr_logic default value: %
+   println "tm_sbr_wcb: "+bin(data[9])+" mask "+bin(mask[9]);    // tm_sbr_wcb, Write to the sram even if the banks in the array is closed default value: %
+   println "tm_sbr_sramon: "+bin(data[8])+" mask "+bin(mask[8]);    // tm_sbr_sramon, All accesses are redirected to the sram default value: %
+   println "tm_sbr_sramoff: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_sbr_sramoff, Sram (and therefore sbr) is switched off, all accesses are going to the array default value: %
+   println "tm_sbr_selsramoff: "+bin(data[6])+" mask "+bin(mask[6]);    // tm_sbr_selsramoff, Selective sram off, new captured fails are not regarded as repaired, but are not captured again default value: %
+   println "tm_sbr_birep: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_sbr_birep, Bi repair status register, sets bi rep efuse when fail is detected during sorp mode default value: %
+   println "tm_sbr_p2rep: "+bin(data[4])+" mask "+bin(mask[4]);    // tm_sbr_p2rep, P2 repair status register, sets bi rep efuse when fail is detected during sorp mode default value: %
+   println "tm_sbr_p4rep: "+bin(data[3])+" mask "+bin(mask[3]);    // tm_sbr_p4rep, P4 repair status register, sets bi rep efuse when fail is detected during sorp mode default value: %
+   println "tm_sbr_nofail_noburn: "+bin(data[2])+" mask "+bin(mask[2]);    // tm_sbr_nofail_noburn, If no fail is captured, the burn sequence will not start (to be combined with clk_burn) default value: %
+   println "tm_sbr_hlvb_noburn: "+bin(data[1])+" mask "+bin(mask[1]);    // tm_sbr_hlvb_noburn, If hlvb bit is set, the burn sequence will not start (to be combined with clk_burn) default value: %
+   println "tm_sbr_doubcap: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_sbr_doubcap, Allows double capture of already captured fails if they are again regarded as fail (e.g. in sramoff mode) default value: %
+}
+
+CHN052[data,mask] { //DLL_CFG
+   println "Chain: DLL configuration";
+   println "cfg_dll_delinit[2:0]: "+bin(data[13..15])+" mask "+bin(mask[13..15]);    // cfg_dll_delinit[2:0], Number of initial coarse delay steps default value: %011
+   println "cfg_dll_bootclk2[1:0]: "+bin(data[11..12])+" mask "+bin(mask[11..12]);    // cfg_dll_bootclk2[1:0], Number of clock cycles between coarse delay updates in second boot phase. default value: %01
+   println "cfg_dll_futdel[2:0]: "+bin(data[8..10])+" mask "+bin(mask[8..10]);    // cfg_dll_futdel[2:0], Future delay to stop dll locking search in time default value: %001
+   print "Fuse disable for tm_dll_fuse_disable is "; data[7] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dll_fuse_disable, 
+   println "cfg_dll_tacmi[2:0]: "+bin(data[4..6])+" mask "+bin(mask[4..6]);    // cfg_dll_tacmi[2:0], Minus offset phase for dll default value: %
+   println "cfg_dll_tacpl[2:0]: "+bin(data[1..3])+" mask "+bin(mask[1..3]);    // cfg_dll_tacpl[2:0], Plus offset phase for dll default value: %
+   print "Fuse disable for tm_dll_offset_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dll_offset_fuse_disable, 
+}
+
+CHN053[data,mask] { //DLL_TM
+   println "Chain: DLL testmodes";
+   println "tm_dll_freeze: "+bin(data[9])+" mask "+bin(mask[9]);    // tm_dll_freeze, Freeze DLL controller (immediately, and after reset, see below) default value: %
+   println "tm_dll_freezecnt[7:0]: "+bin(data[1..8])+" mask "+bin(mask[1..8]);    // tm_dll_freezecnt[7:0], If tm_freeze is set, DLL controller will freeze after this amount of clock cycles after reset default value: %
+   println "tm_dll_ramp: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_dll_ramp, If this is set, the delay will vary continuously between maximum and minimum default value: %
+}
+
+CHN054[data,mask] { //DLL_RW
+   println "Chain: DLL RW chain for status readout";
+   println "tm_dll_cden[26:0]: "+bin(data[23..49])+" mask "+bin(mask[23..49]);    // tm_dll_cden[26:0], Coarse delay default value: %
+   println "tm_dll_muxf[14:0]: "+bin(data[8..22])+" mask "+bin(mask[8..22]);    // tm_dll_muxf[14:0], Fine delay default value: %
+   println "tm_dll_underflow: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_dll_underflow, Counter underflow registrated default value: %
+   println "tm_dll_overflow: "+bin(data[6])+" mask "+bin(mask[6]);    // tm_dll_overflow, Counter overflow registrated default value: %
+   println "tm_dll_lsb: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_dll_lsb, Coarse delay decoding bit default value: %
+   println "tm_dll_truelate: "+bin(data[4])+" mask "+bin(mask[4]);    // tm_dll_truelate, Leap frog algorithm needs info that late bit is really late default value: %
+   println "tm_dll_state[3:0]: "+bin(data[0..3])+" mask "+bin(mask[0..3]);    // tm_dll_state[3:0], DLL controller state default value: %
+}
+
+CHN055[data,mask] { //DLLDCC
+   println "Chain: Miscellaneous testmodes for analog part of dll and dcc";
+   println "tm_dll_dcc_vdd[1:0]: "+bin(data[20..21])+" mask "+bin(mask[20..21]);    // tm_dll_dcc_vdd[1:0], Trimming for vdd (process compensation) default value: %01
+   print "Fuse disable for tm_dll_dcc_vdd_fuse_disable is "; data[19] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dll_dcc_vdd_fuse_disable, 
+   println "tm_dll_dcc_bias_dis: "+bin(data[18])+" mask "+bin(mask[18]);    // tm_dll_dcc_bias_dis, Completely disable DLL/DCC bias generator for CMOS DLL. Used for leakage measurement etc. default value: %
+   println "cfg_dcc_off: "+bin(data[17])+" mask "+bin(mask[17]);    // cfg_dcc_off, Bypass DCC completely default value: %
+   print "Fuse disable for tm_dcc_off_fuse_disable is "; data[16] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dcc_off_fuse_disable, 
+   println "cfg_dll_dcc_voltage[3:0]: "+bin(data[12..15])+" mask "+bin(mask[12..15]);    // cfg_dll_dcc_voltage[3:0], Vary the local supply voltage of the CMOS delay elements. Reducing the voltage will increase the coarse unit delay. Default value is 1.2V resulting in 130ps nominal value. default value: %
+   print "Fuse disable for tm_dll_dcc_voltage_fuse_disable is "; data[11] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dll_dcc_voltage_fuse_disable, 
+   println "cfg_dll_dcc_bias[1:0]: "+bin(data[9..10])+" mask "+bin(mask[9..10]);    // cfg_dll_dcc_bias[1:0], Options for DLL&DCC Generator bias trimming (corresponds to vind_dll of H90) default value: %01
+   print "Fuse disable for tm_dll_dcc_bias_fuse_disable is "; data[8] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dll_dcc_bias_fuse_disable, 
+   println "cfg_fb_vext[2:0]: "+bin(data[5..7])+" mask "+bin(mask[5..7]);    // cfg_fb_vext[2:0], Trim option of a clk receiver copy (second stage) in the DLL feedback line for finetuning default value: %
+   println "cfg_fb_vint[3:0]: "+bin(data[1..4])+" mask "+bin(mask[1..4]);    // cfg_fb_vint[3:0], Vint trimming for feedback default value: %
+   print "Fuse disable for tm_fb_rcv_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_fb_rcv_fuse_disable, 
+}
+
+CHN056[data,mask] { //DCC_CFG
+   println "Chain: DCC configuration";
+   println "cfg_dcc_resdel[2:0]: "+bin(data[13..15])+" mask "+bin(mask[13..15]);    // cfg_dcc_resdel[2:0], Number of initial coarse delay steps default value: %100
+   println "cfg_dcc_bootclk2[1:0]: "+bin(data[11..12])+" mask "+bin(mask[11..12]);    // cfg_dcc_bootclk2[1:0], Number of clock cycles between coarse delay updates in second boot phase. default value: %01
+   println "cfg_dcc_futdel[2:0]: "+bin(data[8..10])+" mask "+bin(mask[8..10]);    // cfg_dcc_futdel[2:0], Future delay to stop dll locking search in time default value: %011
+   print "Fuse disable for tm_dcc_fuse_disable is "; data[7] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dcc_fuse_disable, 
+   println "cfg_dcc_tacmi[2:0]: "+bin(data[4..6])+" mask "+bin(mask[4..6]);    // cfg_dcc_tacmi[2:0], Minus offset phase for dcc default value: %
+   println "cfg_dcc_tacpl[2:0]: "+bin(data[1..3])+" mask "+bin(mask[1..3]);    // cfg_dcc_tacpl[2:0], Plus offset phase for dcc default value: %
+   print "Fuse disable for tm_dcc_offset_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dcc_offset_fuse_disable, 
+}
+
+CHN057[data,mask] { //DCC_TM
+   println "Chain: DCC testmodes";
+   println "tm_dcc_freeze: "+bin(data[9])+" mask "+bin(mask[9]);    // tm_dcc_freeze, Freeze DLL controller (immediately, and after reset, see below) default value: %
+   println "tm_dcc_freezecnt[7:0]: "+bin(data[1..8])+" mask "+bin(mask[1..8]);    // tm_dcc_freezecnt[7:0], If tm_freeze is set, DLL controller will freeze after this amount of clock cycles after reset default value: %
+   println "tm_dcc_ramp: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_dcc_ramp, If this is set, the delay will vary continuously between maximum and minimum default value: %
+}
+
+CHN058[data,mask] { //DCC_RW
+   println "Chain: DCC RW chain for status readout";
+   println "tm_dcc_cden[14:0]: "+bin(data[23..37])+" mask "+bin(mask[23..37]);    // tm_dcc_cden[14:0],  default value: %
+   println "tm_dcc_muxf[14:0]: "+bin(data[8..22])+" mask "+bin(mask[8..22]);    // tm_dcc_muxf[14:0],  default value: %
+   println "tm_dcc_underflow: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_dcc_underflow, Counter underflow registrated default value: %
+   println "tm_dcc_overflow: "+bin(data[6])+" mask "+bin(mask[6]);    // tm_dcc_overflow, Counter overflow registrated default value: %
+   println "tm_dcc_lsb: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_dcc_lsb,  default value: %
+   println "tm_dcc_truelate: "+bin(data[4])+" mask "+bin(mask[4]);    // tm_dcc_truelate,  default value: %
+   println "tm_dcc_state[3:0]: "+bin(data[0..3])+" mask "+bin(mask[0..3]);    // tm_dcc_state[3:0], DCC controller state default value: %
+}
+
+CHN059[data,mask] { //DLLGOV
+   println "Chain: Control for DLLGOV";
+   println "tm_dpl[2:0]: "+bin(data[8..10])+" mask "+bin(mask[8..10]);    // tm_dpl[2:0], Monitor internal latency counter signals on lower byte default value: %
+   println "cfg_dllgov[6:0]: "+bin(data[1..7])+" mask "+bin(mask[1..7]);    // cfg_dllgov[6:0], DLLGOV configurations (power saving modes, selection of latency counter) default value: %1000000
+   print "Fuse disable for tm_dllgov_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_dllgov_fuse_disable, 
+}
+
+CHN060[data,mask] { //GLOBAL_CONTROL
+   println "Chain: Global Control: WRT banks, array timings";
+   println "cfg_rpt_en: "+bin(data[21])+" mask "+bin(mask[21]);    // cfg_rpt_en, Enabling use of toggling read preamble by MRS1[8] default value: %
+   print "Fuse disable for tm_rpt_en_fuse_disable is "; data[20] = ( 1 : println "active"; | 0 : println "off"; );    //tm_rpt_en_fuse_disable, 
+   println "tm_cslpwrgatingdis[1:0]: "+bin(data[18..19])+" mask "+bin(mask[18..19]);    // tm_cslpwrgatingdis[1:0], Disable bit for CSL Power Gating default value: %
+   print "Fuse disable for tm_cslpwrgatingdis_fuse_disable is "; data[17] = ( 1 : println "active"; | 0 : println "off"; );    //tm_cslpwrgatingdis_fuse_disable, 
+   println "tm_raset[1:0]: "+bin(data[15..16])+" mask "+bin(mask[15..16]);    // tm_raset[1:0], Disables receiver of A13 pin and allows internal value to be driven high or low. Needed in BI due to limited number of address channels available on burn-in systems. default value: %
+   println "tm_halfgood_en: "+bin(data[14])+" mask "+bin(mask[14]);    // tm_halfgood_en, Enables half-good option (Master fuse) default value: %
+   println "tm_halfgood_adr: "+bin(data[13])+" mask "+bin(mask[13]);    // tm_halfgood_adr, Selection for RA13 in halfgood mode default value: %
+   print "Fuse disable for tm_partial_fuse_disable is "; data[12] = ( 1 : println "active"; | 0 : println "off"; );    //tm_partial_fuse_disable, 
+   println "tm_notmrslock: "+bin(data[11])+" mask "+bin(mask[11]);    // tm_notmrslock, Enables TMRS commands (i.e. setting of TMs) with any bank active (covers this function of old TMRSTDIS) default value: %
+   println "tm_twrshort: "+bin(data[10])+" mask "+bin(mask[10]);    // tm_twrshort, Reduce write window for AP-timing (compared to normal operation: minimum 5 cycles) by 4 cycles default value: %
+   println "tm_cslshort: "+bin(data[9])+" mask "+bin(mask[9]);    // tm_cslshort, Generate short CAS pulse.  default value: %
+   println "tm_extadrapt: "+bin(data[8])+" mask "+bin(mask[8]);    // tm_extadrapt, Activate extended address mode (redundancy addr.) (AX=1) / disable fused redundancy (AX=0), TM_EXTADRAPT  select b/w APT and non-APT mode default value: %
+   println "tm_extadr_aptx: "+bin(data[7])+" mask "+bin(mask[7]);    // tm_extadr_aptx, Activate extended address mode (redundancy addr.) (AX=1) / disable fused redundancy (AX=0), TM_EXTADRAPTX  register for Ax in APT mode default value: %
+   println "tm_cbradr: "+bin(data[6])+" mask "+bin(mask[6]);    // tm_cbradr, Use external addr. for CBR commands default value: %
+   println "tm_cbrwlup: "+bin(data[5])+" mask "+bin(mask[5]);    // tm_cbrwlup, Extend tRAS during CBR, Forces the automatic precharge which is following a CBR to occur at the falling clock edge following the CBR command. For low frequencies the result is a prolongation of tRAS default value: %
+   println "tm_rac: "+bin(data[4])+" mask "+bin(mask[4]);    // tm_rac, Inhibit automatic precharge during CBR, allow write during CBR default value: %
+   println "tm_racreset: "+bin(data[3])+" mask "+bin(mask[3]);    // tm_racreset, RAC reset, As long as TM is active, the row address counter is reset to 000h default value: %
+   println "tm_cbrallbanks[1:0]: "+bin(data[1..2])+" mask "+bin(mask[1..2]);    // tm_cbrallbanks[1:0], Activates all banks or a group of banks simultaneously. default value: %
+   println "tm_wbw: "+bin(data[0])+" mask "+bin(mask[0]);    // tm_wbw, Modify write-back window , new command NACT is used to control the timing (similar to TM_SDTSETEN and TM_ISOOFF) default value: %
+}
+
+CHN061[data,mask] { //TRAS_REFRESH
+   println "Chain: TRAS Refresh";
+   println "tm_refwidth[1:0]: "+bin(data[7..8])+" mask "+bin(mask[7..8]);    // tm_refwidth[1:0], Trimming for bnksel delay in autorefresh default value: %01
+   print "Fuse disable for tm_refwidth_fuse_disable is "; data[6] = ( 1 : println "active"; | 0 : println "off"; );    //tm_refwidth_fuse_disable, 
+   println "tm_stagwidth[1:0]: "+bin(data[4..5])+" mask "+bin(mask[4..5]);    // tm_stagwidth[1:0], Trimming for staggering in autorefresh default value: %01
+   print "Fuse disable for tm_stagwidth_fuse_disable is "; data[3] = ( 1 : println "active"; | 0 : println "off"; );    //tm_stagwidth_fuse_disable, 
+   println "tm_rasrefr[1:0]: "+bin(data[1..2])+" mask "+bin(mask[1..2]);    // tm_rasrefr[1:0], Trimming for autorefresh default value: %01
+   print "Fuse disable for tm_rasrefr_fuse_disable is "; data[0] = ( 1 : println "active"; | 0 : println "off"; );    //tm_rasrefr_fuse_disable, 
+}
+
+CHN063[data,mask] { //CHIPID
+   println "Chain: Only read-out, 90 laser fuse bits, 22 mask bits";
+   println "chip_id[105:0]: "+bin(data[0..105])+" mask "+bin(mask[0..105]);    // chip_id[105:0], Read-only default value: %
+}
+

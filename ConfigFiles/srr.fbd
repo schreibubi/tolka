@@ -1,0 +1,35 @@
+// Decoding of the Status Register read for LSD70
+
+start[var] {
+    print "Vendor Code: %"+bin(var[0..3]);
+    print " Chip revision: %"+bin(var[4..7]);
+    print " ARF: %"+bin(var[8..10])+" "; arf[var[8..10]];
+    print " DQ Width: "; dqwidth[var[11]];
+    print " SDRAM Type: "; sdramtype[var[12]];
+    print " Density: "+bin(var[13..15]);
+    println "";
+}
+
+arf[var] {
+    var[0..2]= ( %111: print ">105°C";
+               | %110: print "105-95°C";
+               | %101: print "95-85°C";
+               | %100: print "85-70°C";
+               | %011: print "70-45°C";
+               | %010: print "45-15°C";
+               | %001: print "15--5°C";
+               | %000: print "<-5°C";
+               );
+}
+
+dqwidth[var] {
+    var[0]= ( %0: print "x16";
+               | %1: print "x32";
+               );
+}
+
+sdramtype[var] {
+    var[0]= ( %0: print "DDR";
+               | %1: print "SDR";
+               );
+}

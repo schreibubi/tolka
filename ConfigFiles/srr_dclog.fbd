@@ -1,0 +1,5 @@
+// Decoding of the Status Register read for LSD70
+
+start[var] {
+    println var[8..10];
+}

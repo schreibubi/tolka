@@ -1,0 +1,6 @@
+// Decoding of the Temperature sensor readout for 2GT70
+
+start[var] {
+    println -40+2*~var[0,16,32,48,64,80,96];
+}
+

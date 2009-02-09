@@ -1,0 +1,226 @@
+// This file is untested, so please check before using!
+start_efusetrim[var] {
+    print "FS_DLLTRIM: "; dll_trim[var[0..2]];
+    ocdbiasen[var[3]];
+    casdly[var[4,5]];
+    print "Address hold time adjustment: "; time[var[6..8]];
+    pdnsave[var[9]];
+    spare_fuses[var[10,11]];
+    print "ODT hold time adjustment: +"; time[var[12..14]];
+    print "ODT setup time adjustment: +"; time[var[15..17]];
+    print "Hold time of command pin adjustment +"; time[var[18..20]];
+    iocd[var[21..23]];
+    parclk[var[40..42]];
+    tlz[var[43..45]];
+    dqs_lock_en[var[46]];
+    vssq2vss[var[47]];
+    fsspare[var[48]];
+    print "OCD Rising Slew Rate Trimming Relative Driver Strength: "; srtune[var[49..51]];
+    print "OCD Falling SLew RAte Trimming Relative Driver Strength: "; srtune[var[51..53]];
+    tdsh[var[54..57]];
+    dqsck_up[var[58..60]];
+    dqsck_lo[var[61..63]];
+    ocd_dc[var[64..66]];
+    rwdmx[var[67,69]];
+    conf_trim[var[70..77]];
+    println "";
+}
+
+dll_trim[var_dll] {
+    var_dll[0..2] = ( 7: print "244,24 ps";
+                    | 6: print "327,48 ps";
+                    | 5: print "413,49 ps";
+                    | 4: print "493,91 ps";
+                    | 0: print "579,52 ps";
+                    | 1: print "664,87 ps";
+                    | 2: print "746,54 ps";
+                    | 3: print "824,98 ps";
+                    );
+}
+
+ocdbiasen[var_ocd] {
+    var_ocd[0] = ( 1: print ", Turned off OCD bias circuit in PWRDN SRF mode";
+                 );
+}
+
+casdly[var_casdly] {
+    var_casdly[0,1] = ( 0 : print ", CAS to CASX delay: 0(default)";
+                      | 1: print ", CAS to CASX delay: -130 ps";
+                      | 2: print ", CAS to CASX delay: +270 ps";
+                      | 3: print ", CAS to CASX delay: +140 ps";
+                      );
+}
+
+time[var_time] {
+    var_time[0..2] = ( 0..7: print var_time[0..2]*25 + " ps";
+                     );
+}
+
+iocd[var_iocd] {
+    var_iocd[0..2] = ( 0..7: print "FS_IOCD: "+var_iocd;
+                     );
+}
+
+vssq2vss[var_vss] {
+    var_vss[0] = ( 0: print "FS_VSSQ2VSS - Fuse to short vssq to vss: 0(default)";
+                 | 1: print "FS_VSSQ2VSS - Fuse to short vssq to vss: 1";
+                 );
+}
+
+fsspare[var_par] {
+    print "FS_FSSPARE: "+var_par;
+}
+
+rwdmx[var_rwdmx] {
+    var_rwdmx[0,1] = ( 0: print "DQRST: default";
+                     | 1: print "DQRST: +220 ps";
+                     | 2: print "DQRST: +440 ps";
+                     | 3: print "DQRST: +660 ps";
+                     );
+}
+
+pdnsave[var_pdnsave] {
+    var_pdnsave[0] = ( 1: print ", ReduceCLK and CKE receiver standby current to half";
+                     );
+}
+
+spare_fuses[var_fuses] {
+    print ", spare fuses: " + var_fuses;
+}
+
+parclk[var_parclk] {
+    var_parclk[0..2] = ( 0: print ", Latency counter timing trim: default";
+                       | 1: print ", Latency counter timing trim: +200 ps";
+                       | 2: print ", Latency counter timing trim: +400 ps";
+                       | 3: print ", Latency counter timing trim: +600 ps";
+                       | 4: print ", Latency counter timing trim: -200 ps";
+                       | 5: print ", Latency counter timing trim: -400 ps";
+                       | 6: print ", Latency counter timing trim: -600 ps";
+                       | 7: print ", Latency counter timing trim: -800 ps";
+                       );
+}
+
+tlz[var_tlz] {
+    var_tlz[0,1] = ( 0: print ", tLZ: default";
+                   | 1: print ", tLZ: 150 ps";
+                   | 2: print ", tLZ: 300 ps";
+                   | 3: print ", tLZ: 450 ps";
+                   );
+}
+
+dqs_lock_en[var_dqs] {
+    var_dqs[0] = ( 0: print ", Disables DQS locking function: enabled(default)";
+                 | 1: print ", Disables DQS locking function: disabled";
+                 );
+}
+
+srtune[var_srtune] {
+    var_srtune[0..2] = ( 0: print "100% (default)";
+                       | 1: print "110%";
+                       | 2: print "120%";
+                       | 3: print "130%";
+                       | 4: print "60%";
+                       | 5: print "70%";
+                       | 6: print "80%";
+                       | 7: print "90%";
+                       );
+}
+
+tdsh[var_tdsh] {
+    print ", DQ to DQS trimming: " + (25 * var_tdsh[0..3]) + "ps";
+}
+
+dqsck_up[var_dqsck] {
+    var_dqsck[0..2] = ( 0: print ", tAC trimming for UDQS: Up. DQS - 0ps ; Up. bDQS - 0ps";
+                      | 1: print ", tAC trimming for UDQS: Up. DQS -> 0ps ; Up. bDQS -> -50ps";
+                      | 2: print ", tAC trimming for UDQS: Up. DQS -> 0ps ; Up. bDQS -> +50ps";
+                      | 3: print ", tAC trimming for UDQS: Up. DQS -> -50ps ; Up. bDQS -> 0ps";
+                      | 4: print ", tAC trimming for UDQS: Up. DQS -> -50ps ; Up. bDQS -> +50ps";
+                      | 5: print ", tAC trimming for UDQS: Up. DQS -> +50ps ; Up. bDQS -> -50ps";
+                      | 6: print ", tAC trimming for UDQS: Up. DQS -> +50ps ; Up. bDQS -> 0ps";
+                      | 7: print ", tAC trimming for UDQS: +50ps for all DQs";
+                      );
+}
+
+dqsck_lo[var_dqsck] {
+    var_dqsck[0..2] = ( 0: print ", tAC trimming for LDQS: Lp. DQS - 0ps ; Lp. bDQS - 0ps";
+                      | 1: print ", tAC trimming for LDQS: Lp. DQS -> 0ps ; Lp. bDQS -> -50ps";
+                      | 2: print ", tAC trimming for LDQS: Lp. DQS -> 0ps ; Lp. bDQS -> +50ps";
+                      | 3: print ", tAC trimming for LDQS: Lp. DQS -> -50ps ; Lp. bDQS -> 0ps";
+                      | 4: print ", tAC trimming for LDQS: Lp. DQS -> -50ps ; Lp. bDQS -> +50ps";
+                      | 5: print ", tAC trimming for LDQS: Lp. DQS -> +50ps ; Lp. bDQS -> -50ps";
+                      | 6: print ", tAC trimming for LDQS: Lp. DQS -> +50ps ; Lp. bDQS -> 0ps";
+                      | 7: print ", tAC trimming for LDQS: +50ps for all DQs";
+                      );
+}
+
+ocd_dc[var_ocd] {
+    var_ocd[0..2] = ( 0: print ", CLK High Pulse Difference: default";
+                    | 1: print ", CLK High Pulse Difference: +25 ps";
+                    | 2: print ", CLK High Pulse Difference: +50 ps";
+                    | 3: print ", CLK High Pulse Difference: +75 ps";
+                    | 4: print ", CLK High Pulse Difference: -100 ps";
+                    | 5: print ", CLK High Pulse Difference: -75 ps";
+                    | 6: print ", CLK High Pulse Difference: -50 ps";
+                    | 7: print ", CLK High Pulse Difference: -25 ps";
+                    );
+}
+
+conf_trim[var_conftrim] {
+    hgo[var_conftrim[0]];
+    qgo[var_conftrim[1]];
+    fs2_ende[var_conftrim[2]];
+    fs_ende[var_conftrim[3]];
+    dualcbr[var_conftrim[4]];
+    trim_vint[var_conftrim[5]];
+    conf_x8[var_conftrim[6]];
+    conf_x4[var_conftrim[7]];
+}
+
+conf_x8[var_conf_x8] {
+    var_conf_x8[0] = ( 0: print ", Enable X8 configuration";
+                     | 1: print ", Disable X8 configuration";
+                     );
+}
+
+conf_x4[var_conf_x4] {
+    var_conf_x4[0] = ( 0: print ", Enable X4 configuration";
+                     | 1: print ", Disable X4 configuration";
+                     );
+}
+
+trim_vint[var_trim_vint] {
+    var_trim_vint[0] = ( 0: print ", trim vint as default+100MV";
+                       | 1: print ", trim vint as default";
+                       );
+}
+
+dualcbr[var_dualcbr] {
+    var_dualcbr[0] = ( 0: print ", Enable DUALCBR";
+                     | 1: print ", Disable DUALCBR";
+                     );
+}
+
+fs_ende[var_fs] {
+    var_fs[0] = ( 0: print ", Clmaped RADD<12> to 1 if FS128M is enabled";
+                | 1: print ", Clmaped RADD<12> not to 1 if FS128M is enabled";
+                );
+}
+
+fs2_ende[var_fs2] {
+    var_fs2[0] = ( 0: print ", Clmaped RADD<13> to 1 if FS256M is enabled";
+                 | 1: print ", Clmaped RADD<13> not to 1 if FS256M is enabled";
+                 );
+}
+
+qgo[var_qgo] {
+    var_qgo[0] = ( 0: print ", Enable Quad good option";
+                 | 1: print ", Quad good option disabled";
+                 );
+}
+
+hgo[var_hgo] {
+    var_hgo[0] = ( 0: print ", Enable Half good option";
+                 | 1: print ", Half good option disabled";
+                 );
+}
