@@ -1,0 +1,206 @@
+<ui version="4.0" language="jambi" >
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>571</width>
+    <height>458</height>
+   </rect>
+  </property>
+  <property name="toolButtonStyle" >
+   <enum>com.trolltech.qt.core.Qt.ToolButtonStyle.ToolButtonIconOnly</enum>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <layout class="QGridLayout" >
+    <item row="0" column="0" >
+     <widget class="QSplitter" name="splitter" >
+      <property name="orientation" >
+       <enum>com.trolltech.qt.core.Qt.Orientation.Vertical</enum>
+      </property>
+      <widget class="QGroupBox" name="outputBox" >
+       <property name="title" >
+        <string>Output</string>
+       </property>
+       <layout class="QGridLayout" >
+        <item row="0" column="0" >
+         <widget class="QTextBrowser" name="outputResult" >
+          <property name="html" >
+           <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;">
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">&lt;/p>&lt;/body>&lt;/html></string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="decodingBox" >
+       <property name="title" >
+        <string>Decoding</string>
+       </property>
+       <layout class="QGridLayout" >
+        <item row="0" column="0" >
+         <widget class="QTextEdit" name="programEdit" />
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="inputBox" >
+       <property name="title" >
+        <string>Input</string>
+       </property>
+       <layout class="QGridLayout" >
+        <item row="0" column="0" >
+         <widget class="QTextEdit" name="inputEdit" />
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>571</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuEdit" >
+    <property name="title" >
+     <string>Edit</string>
+    </property>
+    <addaction name="actionCut" />
+    <addaction name="actionCopy" />
+    <addaction name="actionPaste" />
+   </widget>
+   <widget class="QMenu" name="menuFile" >
+    <property name="title" >
+     <string>File</string>
+    </property>
+    <addaction name="actionLoad_Data" />
+    <addaction name="separator" />
+    <addaction name="actionLoad_decoding" />
+    <addaction name="actionSave_decoding" />
+    <addaction name="separator" />
+    <addaction name="actionSave_results" />
+    <addaction name="separator" />
+    <addaction name="actionQuit" />
+   </widget>
+   <widget class="QMenu" name="menuHelp" >
+    <property name="title" >
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout" />
+   </widget>
+   <addaction name="menuFile" />
+   <addaction name="menuEdit" />
+   <addaction name="menuHelp" />
+  </widget>
+  <widget class="QStatusBar" name="statusbar" />
+  <widget class="QToolBar" name="toolBar" >
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionLoad_Data" />
+   <addaction name="separator" />
+   <addaction name="actionLoad_decoding" />
+   <addaction name="actionSave_decoding" />
+   <addaction name="separator" />
+   <addaction name="actionSave_results" />
+   <addaction name="separator" />
+   <addaction name="actionQuit" />
+   <addaction name="separator" />
+   <addaction name="actionRunAction" />
+   <addaction name="separator" />
+  </widget>
+  <action name="actionLoad_Data" >
+   <property name="icon" >
+    <iconset>classpath:icons/document-open.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Load Data</string>
+   </property>
+  </action>
+  <action name="actionLoad_decoding" >
+   <property name="icon" >
+    <iconset>classpath:icons/document-open.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Load decoding</string>
+   </property>
+  </action>
+  <action name="actionSave_decoding" >
+   <property name="icon" >
+    <iconset>classpath:icons/document-save.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Save decoding</string>
+   </property>
+  </action>
+  <action name="actionSave_results" >
+   <property name="icon" >
+    <iconset>classpath:icons/document-save.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Save results</string>
+   </property>
+  </action>
+  <action name="actionQuit" >
+   <property name="icon" >
+    <iconset>classpath:icons/application-exit.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionCut" >
+   <property name="icon" >
+    <iconset>classpath:icons/edit-cut.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Cut</string>
+   </property>
+  </action>
+  <action name="actionCopy" >
+   <property name="icon" >
+    <iconset>classpath:icons/edit-copy.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionPaste" >
+   <property name="icon" >
+    <iconset>classpath:icons/edit-paste.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionAbout" >
+   <property name="icon" >
+    <iconset>classpath:icons/about-kde.png</iconset>
+   </property>
+   <property name="text" >
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionRunAction" >
+   <property name="icon" >
+    <iconset>classpath:icons/exec.png</iconset>
+   </property>
+   <property name="text" >
+    <string>runAction</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

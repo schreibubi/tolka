@@ -1,0 +1,56 @@
+// Decoding of the e-fuse string of the 512MT70. Verified with real data and cross checked with the 512MT70 Excel sheet
+st[var] {
+	var[0] = (default : start[var[116..0]];);
+		}
+
+start[var] {
+    var[116] = ( 0: print "HLVB_BRST is set";
+               | 1: print "HLVB_BRST is NOT set";
+               );
+    var[115] = ( 0: print ", HLVB_2M is set";
+               | 1: print ", HLVB_2M is NOT set";
+               );
+    var[114] = ( 0: print ", BI_REP is set ";
+               | 1: print ", BI_REP is NOT set";
+               );
+    var[113] = ( 0: print ", P4_REP is set";
+               | 1: print ", P4_REP is NOT set";
+               );
+    var[112] = ( 0: print ", P2_REP is set";
+               | 1: print ", P2_REP is NOT set";
+               );
+    add[var[111..86]];
+    add[var[85..60]];
+    add[var[59..34]];
+    add[var[33..8]];
+    var[7] = ( 0: print ", Enable X4 configuration";
+             | 1: print ", Disable X4 configuration";
+             );
+    var[6] = ( 0: print ", Enable X8 configuration";
+             | 1: print ", Disable X8 configuration";
+             );
+    var[5] = ( 0: print ", trim vint as default+100MV";
+             | 1: print ", trim vint as default";
+             );
+    var[4] = ( 0: print ", Enable DUALCBR";
+             | 1: print ", Disable DUALCBR";
+             );
+    var[3] = ( 0: print ", Clamp RADD<12> to 1 if FS128M is enabled";
+             | 1: print ", Clamp RADD<12> not to 1 if FS128M is enabled";
+             );
+    var[2] = ( 0: print ", Clamp RADD<13> to 1 if FS256M is enabled";
+             | 1: print ", Clamp RADD<13> not to 1 if FS256M is enabled";
+             );
+    var[1] = ( 0: print ", Enable Quarter good option";
+             | 1: print ", Quarter good option disabled";
+             );
+    var[0] = ( 0: println ", Enable Half good option";
+             | 1: println ", Half good option disabled";
+             );
+             }
+
+add[var_add] {
+    var_add[0] = ( 0: print ", EN bit is set: Column: #" + hex(var_add[10..1]) + ", Bank: #" + hex(var_add[12,11]) + ", Row: #" + hex(var_add[25..13]);
+                 | 1: print ", EN bit not set - disabled!";
+                 );
+         }

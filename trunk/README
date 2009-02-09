@@ -1,0 +1,147 @@
+
+  Tolka, Version 0.15.1 (Codename: "Poing", SVN: $Rev: 121 $)
+  Written by Jörg Werner 
+  (C) 2009 Jörg Werner
+
+
+  What is it?
+  -----------
+
+  The Tolka is a tool which allows you to
+  easily interpret the contents of any kind of bitstream (i.e. sequence of zeros and ones).
+
+
+  Why?
+  ----
+
+  For analysis purposes we can read out different kind of information (i.e. Chip-Id,
+  e-fuse strings, temperature, seti-chains) from our DRAM-chips. This information is
+  typically obtained from the device by reading a sequence of bits (the "bitstream")
+  which is output by the device. In a second step this bitstream is typically converted
+  into a human readable form. For this a wide range of tools is used. On the one side there
+  are tools which can only decode one type of bitstream, because the layout of the bitstream
+  is hard-coded in the source-code. But these tools are very fast, efficient and due to this
+  are typically used in production. On the other side there are custom made Excel-Sheets
+  which are easy to use and can be adapted to any bitstream layout. But Excel can not be easily
+  used to process a huge amount of bitstreams and the creation and maintanance of these Excel
+  sheets is complex and error prone.
+  The Tolka tries to cover the middle ground. It is a command line tool
+  (but I'm thinking of adding a graphical interface) so it is easy to process a huge amount
+  if bitstreams. It is also completely configurable regarding how to interpret a bitstream, so it
+  can interpret bitstreams of any kind. The configuration is done through a config-file with a
+  simple syntax, which reflects the layout of the bitstream. So any kind of bitstream can be analyzed
+  easily (e.g how about interpreting UFDDR files?)! The Tolka can read the
+  bitstream data from different input formats, plain human readable formats (text file with zeros
+  and ones in each line) and common binary formats (BE chipid format, BE generic bitstream format,
+  MOD e-fuse format) are supported.
+
+
+  Okay, I want to try it!
+  -----------------------
+
+  To run the Tolka you need to have at least Java 5 installed. Then unpack the zip-file and run
+  the following command:
+
+  java -jar tolka.jar TestData/efrwdata.dat ConfigFiles/efuse.tolka
+
+
+  Usage:
+  ------
+
+  java -jar tolka.jar input-file config-file
+
+
+  Possible options:
+  -----------------
+  -f,--format <format>   format, either plain or chipid
+  -h,--help              help
+  -v,--version           version
+  -d,--dclog             output results in dclog format
+
+
+  File formats supported:
+  -----------------------
+
+  The tool tries to autodetect the input file format if possible. For a plain file or the BE chipid
+  format this is not possible, so you need to specify the format by using the --format switch.
+  Supported formats in this version:
+  - BE chipid binary format, i.e. cbcsrc1.dat
+  - BE generic bitstream format used typically for e-fuse readout or ASDAP data, i.e. bs.dat or ef.dat
+  - MOD e-fuse binary format, i.e. efrwdata.dat
+  - plain format, each line contains one bitstring consisting out of zeros and ones, each line
+    starts with the LSB and ends with the MSB (see sample in TestData/plain.txt).
+
+  Config-File format:
+  -------------------
+  Samples of different config files can be found in the Config-Files directory.
+
+  Lets explain the format using a short example:
+
+  In the config file you define different rules (think of them as subroutines) which are applied
+  during the interpretation of the bitstream. The first rule in the config-file is taken as
+  starting rule:
+
+  st[var] {
+    var[0..3] = ( %000 : print "Zero";
+    			| #1   : print "One";
+    			| 2,3  : print "two or three";
+    			| 4..6,7 : println "between 4 and 7";
+			    | default : subrule1[var[10..0]];);
+
+  The bitstream value is passed to the variable declared in the rectangular brackets after the rule
+  name. The rule body (the part within the curly braces) can contain one or more statments, which are
+  terminated by semicolons. In the example above you see just one so called "switch" statement.
+  This switch statement is very similar to the switch statement found for example in Java, C++. The
+  var[0..3] on the left hand side of the equal sign, specifies the variable value (and in
+  rectangular brackets what bits of this variable, see below) which is used
+  for the decision. The different "cases" are specified within round brackets separated by "|". The
+  values for which each case should trigger are specified before the colon. After the colon the
+  statements to execute are listed. Values can be specified in decimal, binary (%) and hex (#)
+  notation. As in other languages there is also a default case.
+
+  Up to now we skipped over the bit-selections possible for each variable. In the rectangular
+  brackets after each variable only certain bits of this variable can be selected.
+  More than one bit can be selected by using commas, or you can specify ranges by using the
+  ".." notation. Complex example: var[0,5,3,11..40,10..5], you can even reverse the direction of
+  the bits!
+
+  Possible statements are print, println and calls to other rules. A call to another rule is done
+  by stating the name of the rule and inside the rectangular brackets the variable to pass to the
+  subrule.
+
+    subrule1[var[1..8]];
+    subrule2[var[9..12]];
+
+  Unconditionally call a subrule
+
+    var[5] = ( 0: println ", Enable Half good option";
+             | 1: println ", Half good option disabled";
+             );
+
+  Another switch statment.
+
+  }
+
+  subrule1[add] {
+    add[0] = ( 0: print "Column: #" + hex(add[0..3]*5) + "Bank: %" + bin(add[4,5]);
+             | 1: print "disabled!";
+             );
+  }
+
+  In this subrule you see the usage of the hex and bin function to convert a number to a hex and
+  bin string. Additionally you see that calculations are possible.
+
+  A more detailed specification of the config-file syntax will be published in one of the next
+  versions.
+
+  Contact:
+  --------
+
+  Joerg Werner
+
+  Changelog:
+  ----------
+  
+  0.1:		initial release
+  0.15:		added dclog output functionality, bug-fixes
+
