@@ -233,7 +233,7 @@ public class Tolka {
 					System.out.println("Interpreted data:");
 
 					IndexedBufferedTreeNodeStream nodes = new IndexedBufferedTreeNodeStream(t);
-					int dummy = nodes.size(); // do not delete!
+					//int dummy = nodes.size(); // do not delete!
 					TreeWizard wiz = new TreeWizard(adaptor, tokenNames);
 					final LinkedHashMap<String, Integer> rules = new LinkedHashMap<String, Integer>();
 					wiz.visit(t, wiz.getTokenType("RULE"), new TreeWizard.Visitor() {
