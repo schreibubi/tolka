@@ -17,29 +17,29 @@
 package org.schreibubi.tolka.AntlrExtension;
 
 import org.antlr.runtime.Token;
-import org.antlr.runtime.tree.CommonTreeNodeStream;
+import org.antlr.runtime.tree.BufferedTreeNodeStream;
 import org.antlr.runtime.tree.TreeAdaptor;
 
 /**
  * @author Jörg Werner
  * 
  */
-public class IndexedCommonTreeNodeStream extends CommonTreeNodeStream {
+public class IndexedBufferedTreeNodeStream extends BufferedTreeNodeStream {
 
 	private int	pos	= 0;
 
 	/**
 	 * @param tree
 	 */
-	public IndexedCommonTreeNodeStream(Object tree) {
-		this(new IndexedCommonTreeAdaptor(), tree);
+	public IndexedBufferedTreeNodeStream(Object tree) {
+		this(new IndexedBufferedTreeAdaptor(), tree);
 	}
 
 	/**
 	 * @param adaptor
 	 * @param tree
 	 */
-	public IndexedCommonTreeNodeStream(TreeAdaptor adaptor, Object tree) {
+	public IndexedBufferedTreeNodeStream(TreeAdaptor adaptor, Object tree) {
 		super(adaptor, tree);
 	}
 
@@ -48,13 +48,13 @@ public class IndexedCommonTreeNodeStream extends CommonTreeNodeStream {
 	 * @param tree
 	 * @param initialBufferSize
 	 */
-	public IndexedCommonTreeNodeStream(TreeAdaptor adaptor, Object tree, int initialBufferSize) {
+	public IndexedBufferedTreeNodeStream(TreeAdaptor adaptor, Object tree, int initialBufferSize) {
 		super(adaptor, tree, initialBufferSize);
 	}
 
 	@Override
 	public void fillBuffer(Object t) {
-		IndexedCommonTreeAdaptor adaptor = (IndexedCommonTreeAdaptor) getTreeAdaptor();
+		IndexedBufferedTreeAdaptor adaptor = (IndexedBufferedTreeAdaptor) getTreeAdaptor();
 		boolean nil = adaptor.isNil(t);
 		if (!nil) {
 			adaptor.setIndex(t, pos++);
@@ -78,7 +78,7 @@ public class IndexedCommonTreeNodeStream extends CommonTreeNodeStream {
 
 	@Override
 	protected void addNavigationNode(final int ttype) {
-		IndexedCommonTreeAdaptor adaptor = (IndexedCommonTreeAdaptor) getTreeAdaptor();
+		IndexedBufferedTreeAdaptor adaptor = (IndexedBufferedTreeAdaptor) getTreeAdaptor();
 		Object navNode = null;
 		if (ttype == Token.DOWN) {
 			if (hasUniqueNavigationNodes()) {

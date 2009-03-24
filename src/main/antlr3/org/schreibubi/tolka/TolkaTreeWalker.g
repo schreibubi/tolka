@@ -312,7 +312,7 @@ numberOrRange returns [LinkedHashSet<Symbol> value=new LinkedHashSet<Symbol>()]
     (( b=number { value.add($b.value); }
     | r=range { value.addAll($r.rangelist); }
     )+
-    | 'default' { value.add(new SymbolInteger(BigInteger.valueOf(-1))); } )
+    | DEFAULT { value.add(new SymbolInteger(BigInteger.valueOf(-1))); } )
     ;
 
 number returns [Symbol value]

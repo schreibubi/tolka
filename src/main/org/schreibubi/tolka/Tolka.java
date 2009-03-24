@@ -42,9 +42,9 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.schreibubi.symbol.Symbol;
 import org.schreibubi.symbol.SymbolInteger;
-import org.schreibubi.tolka.AntlrExtension.IndexedCommonTree;
-import org.schreibubi.tolka.AntlrExtension.IndexedCommonTreeAdaptor;
-import org.schreibubi.tolka.AntlrExtension.IndexedCommonTreeNodeStream;
+import org.schreibubi.tolka.AntlrExtension.IndexedBufferedTree;
+import org.schreibubi.tolka.AntlrExtension.IndexedBufferedTreeAdaptor;
+import org.schreibubi.tolka.AntlrExtension.IndexedBufferedTreeNodeStream;
 import org.schreibubi.tolka.DataFormats.BsreadFormat;
 import org.schreibubi.tolka.DataFormats.CBMDatFormat;
 import org.schreibubi.tolka.DataFormats.ChipIdFormat;
@@ -216,14 +216,14 @@ public class Tolka {
 					TolkaGrammarLexer lex = new TolkaGrammarLexer(input);
 					CommonTokenStream tokens = new CommonTokenStream(lex);
 					TolkaGrammarParser parser = new TolkaGrammarParser(tokens);
-					TreeAdaptor adaptor = new IndexedCommonTreeAdaptor();
+					TreeAdaptor adaptor = new IndexedBufferedTreeAdaptor();
 					String[] tokenNames = parser.getTokenNames();
 					parser.setTreeAdaptor(adaptor);
 					TolkaGrammarParser.rules_return r = parser.rules();
 					// System.out.println("tree: " + ((Tree)
 					// r.getTree()).toStringTree());
 
-					IndexedCommonTree t = (IndexedCommonTree) r.getTree();
+					IndexedBufferedTree t = (IndexedBufferedTree) r.getTree();
 
 					// ASTFrame af = new ASTFrame("Tree", t);
 					// af.setVisible(true);
@@ -232,15 +232,15 @@ public class Tolka {
 
 					System.out.println("Interpreted data:");
 
-					IndexedCommonTreeNodeStream nodes = new IndexedCommonTreeNodeStream(t);
+					IndexedBufferedTreeNodeStream nodes = new IndexedBufferedTreeNodeStream(t);
 					int dummy = nodes.size(); // do not delete!
 					TreeWizard wiz = new TreeWizard(adaptor, tokenNames);
 					final LinkedHashMap<String, Integer> rules = new LinkedHashMap<String, Integer>();
 					wiz.visit(t, wiz.getTokenType("RULE"), new TreeWizard.Visitor() {
 						@Override
 						public void visit(Object t) {
-							String name = ((IndexedCommonTree) t).getChild(0).getText();
-							rules.put(name, ((IndexedCommonTree) t).getIndex());
+							String name = ((IndexedBufferedTree) t).getChild(0).getText();
+							rules.put(name, ((IndexedBufferedTree) t).getIndex());
 						}
 					});
 

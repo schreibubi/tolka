@@ -17,32 +17,43 @@
 package org.schreibubi.tolka.AntlrExtension;
 
 import org.antlr.runtime.Token;
-import org.antlr.runtime.tree.CommonTreeAdaptor;
+import org.antlr.runtime.tree.CommonTree;
 
 /**
  * @author Jörg Werner
  * 
  */
-public class IndexedCommonTreeAdaptor extends CommonTreeAdaptor {
+public class IndexedBufferedTree extends CommonTree {
+
+	int	index	= -1;
 
 	/**
 	 * 
 	 */
-	public IndexedCommonTreeAdaptor() {
+	public IndexedBufferedTree() {
 		super();
 	}
 
-	@Override
-	public Object create(Token payload) {
-		return new IndexedCommonTree(payload);
+	/**
+	 * @param node
+	 */
+	public IndexedBufferedTree(CommonTree node) {
+		super(node);
 	}
 
-	public int getIndex(Object t) {
-		return ((IndexedCommonTree) t).getIndex();
+	/**
+	 * @param t
+	 */
+	public IndexedBufferedTree(Token t) {
+		super(t);
 	}
 
-	public void setIndex(Object t, int i) {
-		((IndexedCommonTree) t).setIndex(i);
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 
 }
