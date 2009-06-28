@@ -20,6 +20,7 @@ tree grammar TolkaTreeWalker;
 options {
     tokenVocab=TolkaGrammar;
     ASTLabelType=CommonTree;
+    backtrack=true;
 }
 
 @header {
@@ -30,7 +31,7 @@ options {
     import org.schreibubi.symbol.*;
     import java.math.BigInteger;
     import java.io.PrintWriter;
-    import org.schreibubi.tolka.AntlrExtension.IndexedCommonTreeNodeStream;
+    import org.schreibubi.tolka.AntlrExtension.IndexedBufferedTreeNodeStream;
 }
 
 @members {
@@ -57,12 +58,12 @@ options {
   }
 
   public void execRule(String name, ArrayList<Symbol> arg) throws RecognitionException {
-      IndexedCommonTreeNodeStream stream = (IndexedCommonTreeNodeStream)input;
+      IndexedBufferedTreeNodeStream stream = (IndexedBufferedTreeNodeStream)input;
         int addr = rulesLookup.get(name);;
         if ( addr>=0 ) {
-          ((IndexedCommonTreeNodeStream)input).push(addr);
+          ((IndexedBufferedTreeNodeStream)input).push(addr);
           rule(arg);
-          ((IndexedCommonTreeNodeStream)input).pop();
+          ((IndexedBufferedTreeNodeStream)input).pop();
         }
         else {
 			throw new RecognitionException();
